@@ -5,11 +5,14 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+
+import TickOffBox from '@/components/HabitBoxes/TickOffBox.vue'
+import AddHabitBox from './components/HabitBoxes/AddHabitBox.vue'
+import TimerBox from './components/HabitBoxes/TimerBox.vue'
+import TodoBox from './components/HabitBoxes/TodoBox.vue'
 </script>
 
 <template>
@@ -25,19 +28,19 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#"> Building Your Application </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator class="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                <BreadcrumbLink href="#"> Dashboard </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div class="bg-muted/50 aspect-video rounded-xl" />
+        <div class="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <TickOffBox />
+          <TimerBox />
+
+          <TodoBox />
+          <AddHabitBox />
           <div class="bg-muted/50 aspect-video rounded-xl" />
           <div class="bg-muted/50 aspect-video rounded-xl" />
         </div>
