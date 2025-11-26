@@ -3,8 +3,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Item } from '@/components/ui/BareBox'
@@ -21,7 +19,7 @@ import { Button } from '../ui/button'
         <DropdownMenuItem>Weekly Habit</DropdownMenuItem>
         <DropdownMenuItem>Timer</DropdownMenuItem>
         <DropdownMenuItem>To do</DropdownMenuItem>
-        <DropdownMenuItem>Graph</DropdownMenuItem>
+        <DropdownMenuItem>Today</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   </Item>
