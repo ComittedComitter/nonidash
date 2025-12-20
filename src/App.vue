@@ -15,24 +15,47 @@ import TimerBox from './components/HabitBoxes/TimerBox.vue'
 import TodoBox from './components/HabitBoxes/TodoBox.vue'
 import DateBox from './components/HabitBoxes/DateBox.vue'
 
-import { onMounted, onUnmounted, ref } from 'vue'
-import { createSwapy, type Swapy } from 'swapy'
+const activeBoxes = ref([
+  { boxId: 'habit', component: markRaw(HabitBox) },
+  { boxId: 'timer', component: markRaw(TimerBox) },
+  { boxId: 'date', component: markRaw(DateBox) },
+  { boxId: 'add', component: markRaw(AddHabitBox) },
+])
+
+import { onMounted, onUnmounted, ref, computed, watch, markRaw, nextTick } from 'vue'
+import { createSwapy, utils, type Swapy, type SlotItemMapArray } from 'swapy'
+
+const slotItemMap = ref(utils.initSlotItemMap(activeBoxes.value, 'boxId'))
+const slottedItems = computed(() =>
+  utils.toSlottedItems(activeBoxes.value, 'boxId', slotItemMap.value),
+)
 
 const swapy = ref<Swapy | null>(null)
 const container = ref<HTMLElement | null>()
 
-onMounted(() => {
-  // If container element is loaded
-  if (container.value) {
-    swapy.value = createSwapy(container.value)
+// watch(
+//   activeBoxes,
+//   () =>
+//     utils.dynamicSwapy(
+//       swapy.value,
+//       activeBoxes.value,
+//       'boxId',
+//       slotItemMap.value,
+//       (value: SlotItemMapArray) => (slotItemMap.value = value),
+//     ),
+//   { deep: true },
+// )
 
-    swapy.value.onBeforeSwap((event) => {
-      console.log('beforeSwap', event)
-      // This is for dynamically enabling and disabling swapping.
-      // Return true to allow swapping, and return false to prevent swapping.
-      return true
-    })
+onMounted(() => {
+  if (!container.value) {
+    throw new Error('Container not found')
   }
+  swapy.value = createSwapy(container.value, {
+    manualSwap: true,
+  })
+  swapy.value.onSwap(async (event) => {
+    slotItemMap.value = event.newSlotItemMap.asArray
+  })
 })
 
 onUnmounted(() => {
@@ -62,35 +85,20 @@ onUnmounted(() => {
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div
-          class="container grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-3"
+          class="grid auto-rows-[30vh] grid-flow-dense gap-4 md:grid-cols-2 lg:grid-cols-3"
           ref="container"
+          id="dashboard"
         >
-          <div data-swapy-slot="row1-col1">
-            <div data-swapy-item="date"><DateBox /></div>
+          <div
+            v-for="{ slotId, itemId, item } in slottedItems"
+            :key="slotId"
+            :data-swapy-slot="slotId"
+          >
+            <div v-if="item" class="item" :data-swapy-item="itemId" :key="itemId">
+              <component :is="item.component" />
+            </div>
           </div>
-          <div data-swapy-slot="row1-col2">
-            <div data-swapy-item="habit"><HabitBox /></div>
-          </div>
-          <div data-swapy-slot="row1-col3">
-            <div data-swapy-item="habit2"><HabitBox /></div>
-          </div>
-          <div data-swapy-slot="row2-col1">
-            <div data-swapy-item="timer"><TimerBox /></div>
-          </div>
-          <div data-swapy-slot="row2-col2">
-            <div data-swapy-item="todo"><TodoBox /></div>
-          </div>
-          <div data-swapy-slot="row2-col3">
-            <div data-swapy-item="add"><AddHabitBox /></div>
-          </div>
-          <!--  <div data-swapy-slot="row3-col1">
-            <div data-swapy-item="empty"><div class="bg-muted/50 aspect-video rounded-xl" /></div>
-          </div>
-          <div data-swapy-slot="row3-col2">
-            <div data-swapy-item="empty2"><div class="bg-muted/50 aspect-video rounded-xl" /></div>
-          </div> -->
         </div>
-        <div class="bg-muted/50 min-h-[100h] flex-1 rounded-xl md:min-h-min" />
       </div>
     </SidebarInset>
   </SidebarProvider>

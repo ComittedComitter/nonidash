@@ -25,7 +25,16 @@ const props = withDefaults(
     data-slot="item"
     :as="as"
     :as-child="asChild"
-    :class="cn(itemVariants({ variant, size }), props.class, 'aspect-video')"
+    :class="
+      cn(
+        itemVariants({ variant, size }),
+        props.class,
+        'w-full',
+        'min-h-[30vh]',
+        'max-h-full',
+        'backdrop-blur-sm',
+      )
+    "
   >
     <slot />
   </Primitive>

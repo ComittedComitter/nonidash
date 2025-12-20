@@ -22,9 +22,9 @@ setInterval(() => {
 
 <template>
   <Item variant="outline" class="p-8 content-center">
-    <h2 class="text-6xl font-bold w-xl">{{ today }} {{ dayNumber }}</h2>
-    <h2 class="text-6xl font-bold text-neutral-400 pb-1 w-xl">
+    <h2 class="text-8xl font-bold w-xl">
       {{ time }}
     </h2>
+    <h2 class="text-5xl text-neutral-400 font-bold">{{ today }} {{ dayNumber }}</h2>
   </Item>
 </template>

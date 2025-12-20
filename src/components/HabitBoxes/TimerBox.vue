@@ -3,7 +3,7 @@ import { Item } from '@/components/ui/BareBox'
 import { Button } from '../ui/button'
 import { ref, computed } from 'vue'
 
-const duration = 1800 // seconds
+const duration = 3600 // seconds
 const timeLeft = ref(duration)
 let interval: ReturnType<typeof setInterval> | null = null
 const paused = ref<boolean>(false)
@@ -48,7 +48,7 @@ function formatTime(seconds: number): string {
 <template>
   <Item variant="outline" class="flex flex-col justify-center">
     <h3 class="text-5xl font-bold">{{ timeFormatted }}</h3>
-    <div class="flex gap-3">
+    <div class="flex gap-3" data-swapy-no-drag>
       <Button v-if="!started || paused" @click="startTimer">{{ goText }}</Button>
       <Button v-if="!paused && started" @click="pauseTimer" variant="outline">Pause</Button>
       <Button v-if="started" @click="stopTimer" variant="outline">Stop</Button>

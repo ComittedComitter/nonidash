@@ -23,12 +23,12 @@ const targetPercentage = 100 / target.value
 <template>
   <Item variant="outline" class="flex flex-col justify-center">
     <div>
-      <h2 class="text-4xl font-bold">Read</h2>
+      <h2 class="text-4xl font-bold">Code</h2>
       <ItemTitle> Target: {{ target }}</ItemTitle>
     </div>
     <div class="flex gap-6">
       <CheckboxGroupRoot v-for="day in days" :key="day.id" v-model="selected">
-        <label>
+        <label data-swapy-no-drag>
           <CheckCircle :value="day.id" />
           <ItemTitle>{{ day.label }}</ItemTitle>
         </label>
