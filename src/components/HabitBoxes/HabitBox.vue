@@ -4,6 +4,7 @@ import CheckCircle from '@/components/ui/checkbox/CheckCircle.vue'
 import { Progress } from '@/components/ui/progress'
 import { CheckboxGroupRoot } from 'reka-ui'
 import { ref } from 'vue'
+import EditableTitle from '../ui/EditableTitle.vue'
 
 const days = [
   { id: 1, label: 'Mon' },
@@ -23,8 +24,10 @@ const targetPercentage = 100 / target.value
 <template>
   <Item variant="outline" class="flex flex-col justify-center">
     <div>
-      <h2 class="text-4xl font-bold">Code</h2>
-      <ItemTitle> Target: {{ target }}</ItemTitle>
+      <label data-swapy-no-drag>
+        <EditableTitle class="text-4xl font-bold" model-value="Work on Noni" />
+        <ItemTitle> Target: {{ target }}</ItemTitle>
+      </label>
     </div>
     <div class="flex gap-6">
       <CheckboxGroupRoot v-for="day in days" :key="day.id" v-model="selected">

@@ -14,12 +14,17 @@ import AddHabitBox from './components/HabitBoxes/AddBox.vue'
 import TimerBox from './components/HabitBoxes/TimerBox.vue'
 import TodoBox from './components/HabitBoxes/TodoBox.vue'
 import DateBox from './components/HabitBoxes/DateBox.vue'
+import RoadMap from './components/HabitBoxes/RoadMap.vue'
 
 const activeBoxes = ref([
-  { boxId: 'habit', component: markRaw(HabitBox) },
-  { boxId: 'timer', component: markRaw(TimerBox) },
-  { boxId: 'date', component: markRaw(DateBox) },
-  { boxId: 'add', component: markRaw(AddHabitBox) },
+  { boxId: 'date', component: markRaw(DateBox), rowSpan: 1 },
+  { boxId: 'habit', component: markRaw(HabitBox), rowSpan: 1 },
+  { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
+  { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
+  { boxId: 'add', component: markRaw(AddHabitBox), rowSpan: 1 },
+  { boxId: 'odoo', component: markRaw(RoadMap), rowSpan: 2 },
+  { boxId: 'add3', component: markRaw(AddHabitBox), rowSpan: 1 },
+  { boxId: 'add4', component: markRaw(AddHabitBox), rowSpan: 1 },
 ])
 
 import { onMounted, onUnmounted, ref, computed, watch, markRaw, nextTick } from 'vue'
@@ -33,33 +38,47 @@ const slottedItems = computed(() =>
 const swapy = ref<Swapy | null>(null)
 const container = ref<HTMLElement | null>()
 
-// watch(
-//   activeBoxes,
-//   () =>
-//     utils.dynamicSwapy(
-//       swapy.value,
-//       activeBoxes.value,
-//       'boxId',
-//       slotItemMap.value,
-//       (value: SlotItemMapArray) => (slotItemMap.value = value),
-//     ),
-//   { deep: true },
-// )
+watch(
+  activeBoxes,
+  () =>
+    utils.dynamicSwapy(
+      swapy.value,
+      activeBoxes.value,
+      'boxId',
+      slotItemMap.value,
+      (value: SlotItemMapArray) => (slotItemMap.value = value),
+    ),
+  { deep: true },
+)
 
-onMounted(() => {
+onMounted(async () => {
+  // const savedLayout = localStorage.getItem('dashboardLayout')
+  // if (savedLayout) {
+  //   try {
+  //     slotItemMap.value = JSON.parse(savedLayout)
+  //   } catch (e) {
+  //     console.error('Failed to parse saved layout', e)
+  //   }
+  // }
+  await nextTick()
   if (!container.value) {
     throw new Error('Container not found')
   }
+
   swapy.value = createSwapy(container.value, {
     manualSwap: true,
   })
+
   swapy.value.onSwap(async (event) => {
-    slotItemMap.value = event.newSlotItemMap.asArray
+    requestAnimationFrame(() => {
+      slotItemMap.value = event.newSlotItemMap.asArray
+
+      localStorage.setItem('dashboardLayout', JSON.stringify(slotItemMap.value))
+    })
   })
 })
 
 onUnmounted(() => {
-  // Destroy the swapy instance on component destroy
   swapy.value?.destroy()
 })
 </script>
@@ -93,6 +112,7 @@ onUnmounted(() => {
             v-for="{ slotId, itemId, item } in slottedItems"
             :key="slotId"
             :data-swapy-slot="slotId"
+            :class="item?.rowSpan === 2 ? 'row-span-2' : ''"
           >
             <div v-if="item" class="item" :data-swapy-item="itemId" :key="itemId">
               <component :is="item.component" />
