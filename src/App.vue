@@ -21,8 +21,8 @@ const activeBoxes = ref([
   { boxId: 'habit', component: markRaw(HabitBox), rowSpan: 1 },
   { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
   { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
-  { boxId: 'add', component: markRaw(AddHabitBox), rowSpan: 1 },
-  { boxId: 'odoo', component: markRaw(RoadMap), rowSpan: 2 },
+  { boxId: 'todo2', component: markRaw(TodoBox), rowSpan: 1 },
+  { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 2 },
   { boxId: 'add3', component: markRaw(AddHabitBox), rowSpan: 1 },
   { boxId: 'add4', component: markRaw(AddHabitBox), rowSpan: 1 },
 ])
@@ -52,14 +52,14 @@ watch(
 )
 
 onMounted(async () => {
-  // const savedLayout = localStorage.getItem('dashboardLayout')
-  // if (savedLayout) {
-  //   try {
-  //     slotItemMap.value = JSON.parse(savedLayout)
-  //   } catch (e) {
-  //     console.error('Failed to parse saved layout', e)
-  //   }
-  // }
+  const savedLayout = localStorage.getItem('dashboardLayout')
+  if (savedLayout) {
+    try {
+      slotItemMap.value = JSON.parse(savedLayout)
+    } catch (e) {
+      console.error('Failed to parse saved layout', e)
+    }
+  }
   await nextTick()
   if (!container.value) {
     throw new Error('Container not found')

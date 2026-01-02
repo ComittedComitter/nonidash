@@ -5,10 +5,20 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { ref } from 'vue'
 import Button from '../ui/button/Button.vue'
 import type { Task } from '@/types'
+import { useLocalStorage } from '@/lib/useLocalStorage'
+import EditableTitle from '../ui/EditableTitle.vue'
+import { Trash2Icon } from 'lucide-vue-next'
 
-const title = ref('To Do')
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+})
+
 const newTask = ref('')
-const tasks = ref<Task[]>([])
+const storageKey = `TodoBox:${props.id}`
+const tasks = useLocalStorage<Task[]>(storageKey, [])
 
 function formSubmitted() {
   if (newTask.value.trim()) {
@@ -24,26 +34,38 @@ function addTask(newTask: string) {
     done: false,
   })
 }
+
+function removeTask(id: string) {
+  const index = tasks.value.findIndex((task) => task.id === id)
+  if (index !== -1) {
+    tasks.value.splice(index, 1)
+  }
+}
 </script>
 
 <template>
-  <Item variant="outline" class="items-start p-10 content-start">
-    <h2 class="text-3xl font-bold w-xl">{{ title }}</h2>
-    <div class="w-full">
-      <form @submit.prevent="formSubmitted">
-        <div class="text-lg font-bold">
-          V1.0 <span class="font-normal text-sm text-gray-400">Foundations</span>
+  <Item variant="outline" class="grid grid-rows-[auto_1fr]">
+    <EditableTitle model-value="To Do" />
+    <form @submit.prevent="formSubmitted" class="flex flex-col justify-between h-full">
+      <div>
+        <div class="flex gap-2 items-center">
+          <EditableTitle model-value="Title" class="font-bold text-base" />
+          <!-- <EditableTitle model-value="Subtitle" class="font-normal text-base text-gray-400" /> -->
         </div>
         <div class="py-2" v-if="tasks">
-          <div v-for="task in tasks" :key="task.id" class="flex gap-3 items-center">
+          <div v-for="task in tasks" :key="task.id" class="flex gap-3 items-center group">
             <Checkbox v-model="task.done" /><ItemContent>{{ task.title }}</ItemContent>
+            <Trash2Icon
+              @click="removeTask(task.id)"
+              class="h-4 overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"
+            />
           </div>
         </div>
-        <div class="flex items-center space-x-2 py-1" data-swapy-no-drag>
-          <Input v-model="newTask" placeholder="New Task" />
-          <Button type="submit"> Add </Button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="flex space-x-2 py-1" data-swapy-no-drag>
+        <Input v-model="newTask" placeholder="New Task" />
+        <Button type="submit"> Add </Button>
+      </div>
+    </form>
   </Item>
 </template>

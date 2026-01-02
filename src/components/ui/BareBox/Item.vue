@@ -33,6 +33,7 @@ const props = withDefaults(
         'min-h-[30vh]',
         'max-h-full',
         'backdrop-blur-sm',
+        'p-7',
       )
     "
   >

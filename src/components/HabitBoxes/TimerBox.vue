@@ -1,43 +1,84 @@
 <script setup lang="ts">
 import { Item } from '@/components/ui/BareBox'
 import { Button } from '../ui/button'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { type TimerState } from '@/types'
+import EditableTitle from '../ui/EditableTitle.vue'
 
-const duration = 3600 // seconds
-const timeLeft = ref(duration)
-let interval: ReturnType<typeof setInterval> | null = null
-const paused = ref<boolean>(false)
-const started = ref<boolean>(false)
-const goText = ref<string>('Start')
+const duration = 180 // seconds
+const now = ref(Date.now())
+
+// --------------------
+//     Persistence
+// --------------------
+
+const STORAGE_KEY = 'timer-state'
+const timerState = ref<TimerState>(loadTimer())
+watch(timerState, saveTimer, { deep: true })
+
+function saveTimer(state: TimerState) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+}
+
+function loadTimer(): TimerState {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  return saved ? JSON.parse(saved) : { endTime: null, remaining: duration, running: false }
+}
+
+// --------------------
+// Countdown calculation
+// --------------------
+
+const remaining = computed(() => {
+  if (!timerState.value.running || timerState.value.endTime === null) {
+    return timerState.value.remaining
+  }
+
+  const diffMs = timerState.value.endTime - now.value
+  return Math.max(0, Math.floor(diffMs / 1000))
+})
+
+setInterval(() => {
+  now.value = Date.now()
+}, 1000)
+
+// --------------------
+//       Controls
+// --------------------
 
 function startTimer() {
-  if (interval) return
-  started.value = true
-  paused.value = false
-  interval = setInterval(() => {
-    if (timeLeft.value > 0) {
-      timeLeft.value--
-    } else {
-      pauseTimer()
-    }
-  }, 1000)
+  if (timerState.value.running) return
+
+  timerState.value.endTime = Date.now() + timerState.value.remaining * 1000
+  timerState.value.running = true
 }
 
 function pauseTimer() {
-  if (interval) clearInterval(interval)
-  interval = null
-  paused.value = true
-  goText.value = 'Resume'
+  if (!timerState.value.running) return
+  timerState.value.remaining = remaining.value
+  timerState.value.endTime = null
+  timerState.value.running = false
 }
 
 function stopTimer() {
-  pauseTimer()
-  timeLeft.value = duration
-  goText.value = 'Start'
-  started.value = false
-  paused.value = false
+  timerState.value.endTime = null
+  timerState.value.remaining = duration
+  timerState.value.running = false
 }
-const timeFormatted = computed(() => formatTime(timeLeft.value))
+// Auto-stop when finished
+watch(remaining, (value) => {
+  if (value === 0 && timerState.value.running) {
+    stopTimer()
+    // 🎉 trigger confetti here
+  }
+})
+
+// --------------------
+//      Formatting
+// --------------------
+
+const timeFormatted = computed(() => formatTime(remaining.value))
+
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60)
   const s = seconds % 60
@@ -46,12 +87,22 @@ function formatTime(seconds: number): string {
 </script>
 
 <template>
-  <Item variant="outline" class="flex flex-col justify-center">
-    <h3 class="text-5xl font-bold">{{ timeFormatted }}</h3>
-    <div class="flex gap-3" data-swapy-no-drag>
-      <Button v-if="!started || paused" @click="startTimer">{{ goText }}</Button>
-      <Button v-if="!paused && started" @click="pauseTimer" variant="outline">Pause</Button>
-      <Button v-if="started" @click="stopTimer" variant="outline">Stop</Button>
+  <Item variant="outline" class="grid grid-rows-[auto_1fr]">
+    <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
+    <div class="flex flex-col flex gap-3 justify-center items-center">
+      <h3 class="text-5xl font-bold">{{ timeFormatted }}</h3>
+      <div class="flex gap-3" data-swapy-no-drag>
+        <Button v-if="!timerState.running" @click="startTimer">{{
+          timerState.remaining === duration ? 'Start' : 'Resume'
+        }}</Button>
+        <Button v-if="timerState.running" @click="pauseTimer" variant="outline">Pause</Button>
+        <Button
+          v-if="timerState.endTime || timerState.remaining !== duration"
+          @click="stopTimer"
+          variant="outline"
+          >Stop</Button
+        >
+      </div>
     </div>
   </Item>
 </template>

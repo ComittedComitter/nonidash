@@ -5,7 +5,8 @@
     @input="onInput"
     @keydown.enter.prevent="onEnter"
     @keydown.esc.prevent="onEscape"
-    class="editable-title"
+    class="rounded-md -m-1 p-1 text-3xl font-bold justify-self-start cursor-text outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+    data-swapy-no-drag
   ></h1>
 </template>
 
@@ -63,15 +64,3 @@ function onEscape() {
   titleElement.value?.blur()
 }
 </script>
-
-<style scoped>
-.editable-title {
-  outline: none;
-  cursor: text;
-  /* Optional styling */
-  padding: 0.2em 0.4em;
-}
-.editable-title:focus {
-  border-bottom: 1px dashed #333;
-}
-</style>

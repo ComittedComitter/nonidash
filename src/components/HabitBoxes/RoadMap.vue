@@ -47,16 +47,16 @@ import { Checkbox } from '@/components/ui/checkbox'
         </div>
 
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Local Storage</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Type in UI</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Manage sizing somehow</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Individual storage</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Add Column in UI</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Delete Tasks</ItemContent>
         </div>
       </div>
       <div class="">
@@ -64,13 +64,13 @@ import { Checkbox } from '@/components/ui/checkbox'
           V1.3 <span class="font-normal text-sm text-gray-400">Habits</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Local Storage</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Set target</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Set target</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Change Title</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Change Title</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Confetti</ItemContent>
@@ -81,7 +81,7 @@ import { Checkbox } from '@/components/ui/checkbox'
           V1.4 <span class="font-normal text-sm text-gray-400">Timer</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Local Storage</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Set duration</ItemContent>
