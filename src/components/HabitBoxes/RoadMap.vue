@@ -73,7 +73,7 @@ import { Checkbox } from '@/components/ui/checkbox'
           <Checkbox :default-value="true" /><ItemContent>Change Title</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Confetti</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Confetti</ItemContent>
         </div>
       </div>
       <div class="">

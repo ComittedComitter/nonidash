@@ -3,10 +3,11 @@ import { Item, ItemTitle } from '@/components/ui/BareBox'
 import CheckCircle from '@/components/ui/checkbox/CheckCircle.vue'
 import { Progress } from '@/components/ui/progress'
 import { CheckboxGroupRoot } from 'reka-ui'
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@/lib/useLocalStorage'
 import { PlusIcon, MinusIcon } from 'lucide-vue-next'
+import confetti from 'canvas-confetti'
 
 const days = [
   { id: 1, label: 'Mon' },
@@ -20,7 +21,7 @@ const days = [
 
 const selected = useLocalStorage<number[]>('days', [])
 const target = ref(5)
-const targetPercentage = 100 / target.value
+const targetPercentage = computed(() => 100 / target.value)
 
 function increaseTarget() {
   if (target.value === 7) return
@@ -32,21 +33,25 @@ function decreaseTarget() {
   if (target.value === 1) return
   target.value--
 }
+watch(
+  () => selected.value.length,
+  (newLength, oldLength) => {
+    if (oldLength < target.value && newLength >= target.value) {
+      confetti()
+    }
+  },
+)
 </script>
 
 <template>
-  <Item variant="outline" class="group grid grid-rows-[auto_1fr] gap-0">
-    <div class="justify-self-end flex items-center" data-swapy-no-drag>
-      <!-- Plus -->
+  <Item variant="outline" class="grid grid-rows-[auto_1fr] gap-0" ref="canvasRef">
+    <div class="justify-self-end flex items-center group" data-swapy-no-drag>
       <MinusIcon
         @click="decreaseTarget"
         class="overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"
       />
-
       <h1 class="mx-1 font-medium text-neutral-600 hidden group-hover:block">Target:</h1>
       <h1 class="mx-1 font-medium text-neutral-600">{{ target }}</h1>
-      <!-- Minus -->
-
       <PlusIcon
         @click="increaseTarget"
         class="overflow-hidden w-0 opacity-0 -translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"

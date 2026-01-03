@@ -24,6 +24,7 @@
     "@unovis/ts": "^1.6.2",
     "@unovis/vue": "^1.6.2",
     "@vueuse/core": "^14.1.0",
+    "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.554.0",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/jsdom": "^27.0.0",
     "@types/node": "^22.19.1",
     "@vitejs/plugin-vue": "^6.0.1",
