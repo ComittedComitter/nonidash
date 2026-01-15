@@ -144,6 +144,40 @@ import { Checkbox } from '@/components/ui/checkbox'
           <Checkbox :default-value="false" /><ItemContent>Avatar Picker</ItemContent>
         </div>
       </div>
+      <div>
+        <div class="text-lg font-bold">
+          V1.8 <span class="font-normal text-sm text-gray-400">Hello World</span>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Polish</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Domain</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Build</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Host</ItemContent>
+        </div>
+      </div>
+      <div>
+        <div class="text-lg font-bold">
+          V1.9 <span class="font-normal text-sm text-gray-400">Finish</span>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Bug fix</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Ask for feedback</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>???</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Profit</ItemContent>
+        </div>
+      </div>
     </div>
   </Item>
 </template>

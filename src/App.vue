@@ -52,6 +52,7 @@ watch(
 )
 
 onMounted(async () => {
+  // load data
   const savedLayout = localStorage.getItem('dashboardLayout')
   if (savedLayout) {
     try {
@@ -115,7 +116,7 @@ onUnmounted(() => {
             :class="item?.rowSpan === 2 ? 'row-span-2' : ''"
           >
             <div v-if="item" class="item" :data-swapy-item="itemId" :key="itemId">
-              <component :is="item.component" />
+              <component :is="item.component" :storageId="itemId" />
             </div>
           </div>
         </div>

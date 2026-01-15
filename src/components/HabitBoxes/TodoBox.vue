@@ -10,14 +10,14 @@ import EditableTitle from '../ui/EditableTitle.vue'
 import { Trash2Icon } from 'lucide-vue-next'
 
 const props = defineProps({
-  id: {
+  storageId: {
     type: String,
     required: true,
   },
 })
 
 const newTask = ref('')
-const storageKey = `TodoBox:${props.id}`
+const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
 
 function formSubmitted() {
@@ -54,7 +54,10 @@ function removeTask(id: string) {
         </div>
         <div class="py-2" v-if="tasks">
           <div v-for="task in tasks" :key="task.id" class="flex gap-3 items-center group">
-            <Checkbox v-model="task.done" /><ItemContent>{{ task.title }}</ItemContent>
+            <Checkbox v-model="task.done" data-swapy-no-drag /><ItemContent
+              :class="{ 'line-through': task.done }"
+              >{{ task.title }}</ItemContent
+            >
             <Trash2Icon
               @click="removeTask(task.id)"
               class="h-4 overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"

@@ -4,8 +4,9 @@ import { Button } from '../ui/button'
 import { ref, computed, watch } from 'vue'
 import { type TimerState } from '@/types'
 import EditableTitle from '../ui/EditableTitle.vue'
+import EditableTimer from '../ui/EditableTimer.vue'
 
-const duration = 180 // seconds
+const duration = ref(180) // seconds
 const now = ref(Date.now())
 
 // --------------------
@@ -22,7 +23,7 @@ function saveTimer(state: TimerState) {
 
 function loadTimer(): TimerState {
   const saved = localStorage.getItem(STORAGE_KEY)
-  return saved ? JSON.parse(saved) : { endTime: null, remaining: duration, running: false }
+  return saved ? JSON.parse(saved) : { endTime: null, remaining: duration.value, running: false }
 }
 
 // --------------------
@@ -62,14 +63,14 @@ function pauseTimer() {
 
 function stopTimer() {
   timerState.value.endTime = null
-  timerState.value.remaining = duration
+  timerState.value.remaining = duration.value
   timerState.value.running = false
 }
+
 // Auto-stop when finished
 watch(remaining, (value) => {
   if (value === 0 && timerState.value.running) {
     stopTimer()
-    // 🎉 trigger confetti here
   }
 })
 
@@ -90,7 +91,13 @@ function formatTime(seconds: number): string {
   <Item variant="outline" class="grid grid-rows-[auto_1fr]">
     <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
     <div class="flex flex-col flex gap-3 justify-center items-center">
-      <h3 class="text-5xl font-bold">{{ timeFormatted }}</h3>
+      <h3 v-if="timerState.running" class="text-5xl font-bold">{{ timeFormatted }}</h3>
+      <EditableTimer
+        v-else
+        v-model="duration"
+        @update:model-value="stopTimer"
+        class="text-5xl font-bold"
+      />
       <div class="flex gap-3" data-swapy-no-drag>
         <Button v-if="!timerState.running" @click="startTimer">{{
           timerState.remaining === duration ? 'Start' : 'Resume'
