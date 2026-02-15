@@ -84,10 +84,10 @@ import { Checkbox } from '@/components/ui/checkbox'
           <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Set duration</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Set duration</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Notification</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Notification</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Confirmation and Total</ItemContent>

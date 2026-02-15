@@ -5,8 +5,9 @@ import { ref, computed, watch } from 'vue'
 import { type TimerState } from '@/types'
 import EditableTitle from '../ui/EditableTitle.vue'
 import EditableTimer from '../ui/EditableTimer.vue'
+import Done from '@/assets/sounds/doneLong.mp3'
 
-const duration = ref(180) // seconds
+const duration = ref(10) // seconds
 const now = ref(Date.now())
 
 // --------------------
@@ -49,7 +50,6 @@ setInterval(() => {
 
 function startTimer() {
   if (timerState.value.running) return
-
   timerState.value.endTime = Date.now() + timerState.value.remaining * 1000
   timerState.value.running = true
 }
@@ -70,6 +70,7 @@ function stopTimer() {
 // Auto-stop when finished
 watch(remaining, (value) => {
   if (value === 0 && timerState.value.running) {
+    playSound()
     stopTimer()
   }
 })
@@ -84,6 +85,14 @@ function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60)
   const s = seconds % 60
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+// --------------------
+//     Notification
+// --------------------
+
+const playSound = () => {
+  const audio = new Audio(Done)
+  audio.play()
 }
 </script>
 
