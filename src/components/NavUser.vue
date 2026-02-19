@@ -6,6 +6,8 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Moon,
+  Sun,
 } from "lucide-vue-next"
 
 import {
@@ -28,6 +30,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { useThemeStore } from '@/stores/theme'
 
 const props = defineProps<{
   user: {
@@ -38,6 +41,7 @@ const props = defineProps<{
 }>()
 
 const { isMobile } = useSidebar()
+const themeStore = useThemeStore()
 </script>
 
 <template>
@@ -91,6 +95,10 @@ const { isMobile } = useSidebar()
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
+            <DropdownMenuItem @click="themeStore.toggle()">
+              <component :is="themeStore.isDark ? Sun : Moon" />
+              {{ themeStore.isDark ? 'Light Mode' : 'Dark Mode' }}
+            </DropdownMenuItem>
             <DropdownMenuItem>
               <BadgeCheck />
               Account
