@@ -9,3 +9,10 @@ export interface TimerState {
   remaining: number
   running: boolean
 }
+
+import type { Component, Raw } from 'vue'
+export interface BoxItem {
+  boxId: string
+  component: Raw<Component>
+  rowSpan: number
+}

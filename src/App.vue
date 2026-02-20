@@ -16,7 +16,24 @@ import TodoBox from './components/HabitBoxes/TodoBox.vue'
 import DateBox from './components/HabitBoxes/DateBox.vue'
 import RoadMap from './components/HabitBoxes/RoadMap.vue'
 
-const activeBoxes = ref([
+import type { BoxItem } from './types'
+import { createSwapy, utils, type Swapy, type SlotItemMapArray } from 'swapy'
+
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  computed,
+  watch,
+  markRaw,
+  nextTick,
+  type Ref,
+  type Raw,
+  type Component,
+} from 'vue'
+
+//Starting layout
+const activeBoxes = ref<BoxItem[]>([
   { boxId: 'date', component: markRaw(DateBox), rowSpan: 1 },
   { boxId: 'habit', component: markRaw(HabitBox), rowSpan: 1 },
   { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
@@ -25,13 +42,10 @@ const activeBoxes = ref([
   { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 2 },
 ])
 
-function addBox(component: ReturnType<typeof markRaw>, boxId: string) {
+// Swapy
+function addBox(component: Raw<Component>, boxId: string) {
   activeBoxes.value.push({ boxId, component, rowSpan: 1 })
 }
-
-// Swapy
-import { onMounted, onUnmounted, ref, computed, watch, markRaw, nextTick, type Ref } from 'vue'
-import { createSwapy, utils, type Swapy, type SlotItemMapArray } from 'swapy'
 
 const slotItemMap = ref(utils.initSlotItemMap(activeBoxes.value, 'boxId'))
 const slottedItems = computed(() =>
