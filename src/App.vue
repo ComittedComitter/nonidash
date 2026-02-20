@@ -23,11 +23,14 @@ const activeBoxes = ref([
   { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
   { boxId: 'todo2', component: markRaw(TodoBox), rowSpan: 1 },
   { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 2 },
-  { boxId: 'add3', component: markRaw(AddHabitBox), rowSpan: 1 },
-  { boxId: 'add4', component: markRaw(AddHabitBox), rowSpan: 1 },
 ])
 
-import { onMounted, onUnmounted, ref, computed, watch, markRaw, nextTick } from 'vue'
+function addBox(component: ReturnType<typeof markRaw>, boxId: string) {
+  activeBoxes.value.push({ boxId, component, rowSpan: 1 })
+}
+
+// Swapy
+import { onMounted, onUnmounted, ref, computed, watch, markRaw, nextTick, type Ref } from 'vue'
 import { createSwapy, utils, type Swapy, type SlotItemMapArray } from 'swapy'
 
 const slotItemMap = ref(utils.initSlotItemMap(activeBoxes.value, 'boxId'))
@@ -101,6 +104,7 @@ onUnmounted(() => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
+          <AddHabitBox @add="addBox" />
         </div>
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
