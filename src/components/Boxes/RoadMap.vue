@@ -89,8 +89,8 @@ import { Checkbox } from '@/components/ui/checkbox'
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Notification</ItemContent>
         </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Confirmation and Total</ItemContent>
+        <div class="flex gap-3 ite<ms-center">
+          <Checkbox :default-value="true" /><ItemContent>Confirmation and Total</ItemContent>
         </div>
       </div>
       <div>

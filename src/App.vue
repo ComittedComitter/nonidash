@@ -9,12 +9,12 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
-import HabitBox from '@/components/HabitBoxes/HabitBox.vue'
-import AddHabitBox from './components/HabitBoxes/AddBox.vue'
-import TimerBox from './components/HabitBoxes/TimerBox.vue'
-import TodoBox from './components/HabitBoxes/TodoBox.vue'
-import DateBox from './components/HabitBoxes/DateBox.vue'
-import RoadMap from './components/HabitBoxes/RoadMap.vue'
+import HabitBox from '@/components/Boxes/HabitBox.vue'
+import AddHabitBox from './components/Boxes/AddBox.vue'
+import TimerBox from './components/Boxes/TimerBox.vue'
+import TodoBox from './components/Boxes/TodoBox.vue'
+import DateBox from './components/Boxes/DateBox.vue'
+import RoadMap from './components/Boxes/RoadMap.vue'
 
 import type { BoxItem } from './types'
 import { createSwapy, utils, type Swapy, type SlotItemMapArray } from 'swapy'
