@@ -4,7 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 </script>
 
 <template>
-  <Item variant="outline" class="items-start p-10 content-start row-span-2">
+  <Item variant="outline" class="items-start p-10 content-start">
     <h2 class="text-3xl font-bold w-xl">Noni Roadmap</h2>
     <div class="grid grid-cols-2 gap-4">
       <div class="">

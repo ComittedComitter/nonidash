@@ -183,9 +183,9 @@ onUnmounted(() => {
             v-for="{ slotId, itemId, item } in slottedItems"
             :key="slotId"
             :data-swapy-slot="slotId"
-            :class="item?.rowSpan === 2 ? 'row-span-2' : ''"
+            :class="item?.rowSpan === 2 ? 'row-span-2 min-h-[60vh]' : ''"
           >
-            <div v-if="item" class="item" :data-swapy-item="itemId" :key="itemId">
+            <div v-if="item" class="item h-full" :data-swapy-item="itemId" :key="itemId">
               <component :is="item.component" :storageId="itemId" />
             </div>
           </div>

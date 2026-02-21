@@ -15,6 +15,7 @@ export function useConfetti() {
     confetti({
       spread: 70,
       origin: { x, y },
+      colors: ['#bb0000', '#ffffff'],
     } as Options)
   }
 

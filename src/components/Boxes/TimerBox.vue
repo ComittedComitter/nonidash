@@ -145,7 +145,7 @@ const playSound = () => {
     <Item variant="outline" class="grid grid-rows-[auto_1fr]">
       <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
       <div class="flex flex-col gap-3 justify-center items-center">
-        <div v-if="finished" class="text-2xl font-bold text-green-500">Finished!</div>
+        <div v-if="finished" class="text-2xl font-bold text-red-700">Finished!</div>
         <h3 v-else-if="timerState.running" class="text-5xl font-bold">{{ timeFormatted }}</h3>
         <EditableTimer
           v-else-if="!finished"
