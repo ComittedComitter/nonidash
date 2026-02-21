@@ -32,19 +32,71 @@ import {
   type Component,
 } from 'vue'
 
-//Starting layout
-const activeBoxes = ref<BoxItem[]>([
-  { boxId: 'date', component: markRaw(DateBox), rowSpan: 1 },
-  { boxId: 'habit', component: markRaw(HabitBox), rowSpan: 1 },
-  { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
-  { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
-  { boxId: 'todo2', component: markRaw(TodoBox), rowSpan: 1 },
-  { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 2 },
-])
+const BOX_COMPONENTS: Record<string, Raw<Component>> = {
+  habit: markRaw(HabitBox),
+  timer: markRaw(TimerBox),
+  todo: markRaw(TodoBox),
+  date: markRaw(DateBox),
+  roadmap: markRaw(RoadMap),
+}
+
+interface SerializedBoxItem {
+  boxId: string
+  boxType: string
+  rowSpan: number
+}
+
+function serializeBoxes(boxes: BoxItem[]): SerializedBoxItem[] {
+  return boxes.map((b) => ({
+    boxId: b.boxId,
+    boxType: Object.entries(BOX_COMPONENTS).find(([, c]) => c === b.component)?.[0] || '',
+    rowSpan: b.rowSpan,
+  }))
+}
+
+function deserializeBoxes(serialized: SerializedBoxItem[]): BoxItem[] {
+  return serialized
+    .map((b) => {
+      const comp = BOX_COMPONENTS[b.boxType]
+      if (!comp) return null
+      return { boxId: b.boxId, component: comp, rowSpan: b.rowSpan }
+    })
+    .filter((b): b is BoxItem => b !== null)
+}
+
+const STORAGE_KEY = 'dashboardBoxes'
+const LAYOUT_KEY = 'dashboardLayout'
+
+function loadBoxes(): BoxItem[] {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved) {
+    try {
+      const serialized = JSON.parse(saved) as SerializedBoxItem[]
+      return deserializeBoxes(serialized)
+    } catch (e) {
+      console.error('Failed to parse saved boxes', e)
+    }
+  }
+  return [
+    { boxId: 'date', component: markRaw(DateBox), rowSpan: 1 },
+    { boxId: 'habit', component: markRaw(HabitBox), rowSpan: 1 },
+    { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
+    { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
+    { boxId: 'todo2', component: markRaw(TodoBox), rowSpan: 1 },
+    { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 2 },
+  ]
+}
+
+function saveBoxes() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeBoxes(activeBoxes.value)))
+}
+
+const activeBoxes = ref<BoxItem[]>(loadBoxes())
 
 // Swapy
 function addBox(component: Raw<Component>, boxId: string) {
   activeBoxes.value.push({ boxId, component, rowSpan: 1 })
+  saveBoxes()
 }
 
 const slotItemMap = ref(utils.initSlotItemMap(activeBoxes.value, 'boxId'))
@@ -69,8 +121,7 @@ watch(
 )
 
 onMounted(async () => {
-  // load data
-  const savedLayout = localStorage.getItem('dashboardLayout')
+  const savedLayout = localStorage.getItem(LAYOUT_KEY)
   if (savedLayout) {
     try {
       slotItemMap.value = JSON.parse(savedLayout)
@@ -91,7 +142,8 @@ onMounted(async () => {
     requestAnimationFrame(() => {
       slotItemMap.value = event.newSlotItemMap.asArray
 
-      localStorage.setItem('dashboardLayout', JSON.stringify(slotItemMap.value))
+      localStorage.setItem(LAYOUT_KEY, JSON.stringify(slotItemMap.value))
+      saveBoxes()
     })
   })
 })
