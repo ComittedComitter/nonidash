@@ -15,6 +15,7 @@ import TimerBox from './components/Boxes/TimerBox.vue'
 import TodoBox from './components/Boxes/TodoBox.vue'
 import DateBox from './components/Boxes/DateBox.vue'
 import RoadMap from './components/Boxes/RoadMap.vue'
+import JournalBox from './components/Boxes/JournalBox.vue'
 
 import type { BoxItem } from './types'
 import { createSwapy, utils, type Swapy, type SlotItemMapArray } from 'swapy'
@@ -37,6 +38,7 @@ const BOX_COMPONENTS: Record<string, Raw<Component>> = {
   todo: markRaw(TodoBox),
   date: markRaw(DateBox),
   roadmap: markRaw(RoadMap),
+  journal: markRaw(JournalBox),
 }
 
 interface SerializedBoxItem {
@@ -123,7 +125,24 @@ onMounted(async () => {
   const savedLayout = localStorage.getItem(LAYOUT_KEY)
   if (savedLayout) {
     try {
-      slotItemMap.value = JSON.parse(savedLayout)
+      const parsedLayout = JSON.parse(savedLayout) as { slot: string; item: string }[]
+      const validLayout: { slot: string; item: string }[] = []
+      const usedItems = new Set<string>()
+
+      for (const entry of parsedLayout) {
+        if (activeBoxes.value.some((b) => b.boxId === entry.item)) {
+          validLayout.push(entry)
+          usedItems.add(entry.item)
+        }
+      }
+
+      for (const box of activeBoxes.value) {
+        if (!usedItems.has(box.boxId)) {
+          validLayout.push({ slot: box.boxId, item: box.boxId })
+        }
+      }
+
+      slotItemMap.value = validLayout
     } catch (e) {
       console.error('Failed to parse saved layout', e)
     }

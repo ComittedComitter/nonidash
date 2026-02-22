@@ -1,4 +1,4 @@
-# Nonidash (habits)
+# Nonidash
 
 A dashboard application for tracking habits, timers, todos with draggable boxes.
 
@@ -25,7 +25,7 @@ src/
 │   ├── Boxes/            # Dashboard widgets (HabitBox, TimerBox, TodoBox, etc.) Put new boxes here
 │   │   └── *.vue
 │   ├── ui/               # Reusable shadcn-style components
-│   │   ├── *.vue
+│   │   └── *.vue
 │   ├── AppSidebar.vue
 │   ├── NavMain.vue
 │   ├── NavProjects.vue
@@ -45,15 +45,7 @@ src/
 
 ---
 
-## Code Style Guidelines
-
-### General Rules
-
-- Use **Composition API** (`<script setup>`) for all Vue components
-- Use **TypeScript** for all files - avoid `any`
-- Prefer **single quotes** for strings 
-- **No semicolons** 
-- **Print width**: 100 characters
+## Code Style
 
 ### Imports
 
@@ -65,113 +57,11 @@ Order imports consistently:
 4. Internal lib/utils (`@/lib/...`, `@/stores/...`)
 5. Types (`@/types`)
 
-```typescript
-// Correct
-import { ref, computed } from 'vue'
-import { Trash2Icon } from 'lucide-vue-next'
-import { Item, ItemContent } from '@/components/ui/BareBox'
-import Button from '../ui/button/Button.vue'
-import type { Task } from '@/types'
-import { useLocalStorage } from '@/lib/useLocalStorage'
-```
-
-### Vue Components
-
-- Use `<script setup lang="ts">` for all components
-- Define props with `defineProps()` - prefer object syntax for better typing
-- Use `defineEmits()` for events
-- Use `markRaw()` for non-reactive component references (e.g., passing Vue components to dynamic rendering)
-
-```typescript
-// Props example
-const props = defineProps({
-  storageId: {
-    type: String,
-    required: true,
-  },
-})
-
-// Emits example
-const emit = defineEmits<{
-  add: [component: ReturnType<typeof markRaw>, boxId: string]
-}>()
-```
-
 ### State Management (Pinia)
 
-- Use Composition API stores with `defineStore()` and function setup
-- Name stores with `use*Store` pattern (e.g., `useThemeStore`, `useCounterStore`)
+Use Composition API stores with `defineStore()` and function setup. Name stores with `use*Store` pattern.
 
-### Types
-
-- Define shared types in `src/types.ts`
-- Use interfaces for objects, types for unions/primitives
-- Avoid `any` - use `unknown` when type is truly unknown
-
-```typescript
-// Good
-interface Task {
-  id: string
-  title: string
-  done: boolean
-}
-
-// Avoid
-type Task = { id: string; title: string; done: boolean } // use interface instead
-```
-
-### Naming Conventions
-
-- **Components**: PascalCase (e.g., `HabitBox.vue`, `TodoBox.vue`)
-- **Files**: kebab-case (e.g., `use-local-storage.ts`)
-- **Variables/functions**: camelCase
-- **Constants**: SCREAMING_SNAKE_CASE (only for true constants)
-- **CSS classes**: kebab-case (Tailwind convention)
-
-### Error Handling
-
-- Use try/catch for async operations with meaningful error messages
-- Log errors to console with context
-- Handle localStorage parse errors gracefully (see App.vue for example)
-
-```typescript
-try {
-  const parsed = JSON.parse(savedLayout)
-} catch (e) {
-  console.error('Failed to parse saved layout', e)
-  localStorage.removeItem('dashboardLayout')
-}
-```
-
-### TailwindCSS
-
-- Use Tailwind utility classes directly in templates
-- Use `@apply` sparingly - only for reusable patterns in `<style>`
-- Theme variables are defined in `style.css` (`:root` and `.dark`)
-- Use `cn()` utility from `@/lib/utils` for conditional class merging
-
----
-
-## Testing
-
-Tests live in `src/__tests__/` and use `@vue/test-utils` with jsdom.
-
-```typescript
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
-import App from '../App.vue'
-
-describe('App', () => {
-  it('mounts renders properly', () => {
-    const wrapper = mount(App)
-    expect(wrapper.text()).toContain('Dashboard')
-  })
-})
-```
-
----
-
-## LocalStorage Pattern
+### LocalStorage Pattern
 
 Use the `useLocalStorage` composable for reactive localStorage:
 
@@ -183,8 +73,6 @@ const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
 ```
 
-This provides automatic reactivity and JSON serialization.
-
 ---
 
 ## Scaffolding New Boxes
@@ -192,26 +80,29 @@ This provides automatic reactivity and JSON serialization.
 To create a new box component:
 
 1. Create `src/components/Boxes/YourBoxName.vue`
-2. Import required components:
+2. Import required components and use localStorage:
+
    ```typescript
    import { Item, ItemContent } from '@/components/ui/BareBox'
    import EditableTitle from '../ui/EditableTitle.vue'
    import { useLocalStorage } from '@/lib/useLocalStorage'
-   ```
-3. Define props with `storageId`:
-   ```typescript
+
    const props = defineProps({
      storageId: {
        type: String,
        required: true,
      },
    })
-   ```
-4. Use localStorage pattern:
-   ```typescript
+
    const storageKey = `YourBoxName:${props.storageId}`
    const data = useLocalStorage<YourType>(storageKey, defaultValue)
    ```
-5. Add to `AddBox.vue`:
+
+3. Add to `AddBox.vue`:
    - Import the component
    - Add a `DropdownMenuItem` with `markRaw(YourComponent)`
+4. Add to `App.vue`:
+   - Import the component
+   - Add it to `BOX_COMPONENTS` with a unique key (e.g., `journal: markRaw(JournalBox)`)
+
+   This is required for the box to be saved and restored on page reload.
