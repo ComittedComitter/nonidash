@@ -1,6 +1,6 @@
-# Nonidash (habits)
+# Nonidash
 
-A Vue 3 + Vite dashboard application for tracking habits, timers, todos, dates, and roadmaps with draggable boxes.
+A dashboard application for tracking habits, timers, todos with draggable boxes.
 
 ## Tech Stack
 
@@ -17,53 +17,15 @@ A Vue 3 + Vite dashboard application for tracking habits, timers, todos, dates, 
 
 ---
 
-## Commands
-
-```bash
-# Development
-npm run dev              # Start dev server with hot reload
-
-# Build
-npm run build            # Type-check + build for production
-npm run build-only       # Build only (skip type-check)
-npm run preview          # Preview production build
-
-# Testing
-npm run test:unit        # Run all tests
-npm run test:unit -- src/__tests__/App.spec.ts    # Run single test file
-npm run test:unit -- --run   # Run tests once (not watch mode)
-npm run test:unit -- --ui   # Run with Vitest UI
-
-# Code Quality
-npm run lint             # Lint and auto-fix
-npm run type-check       # TypeScript check
-npm run format           # Format with Prettier
-```
-
----
-
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   ├── HabitBoxes/       # Dashboard widgets (HabitBox, TimerBox, TodoBox, etc.)
+│   ├── Boxes/            # Dashboard widgets (HabitBox, TimerBox, TodoBox, etc.) Put new boxes here
 │   │   └── *.vue
 │   ├── ui/               # Reusable shadcn-style components
-│   │   ├── avatar/
-│   │   ├── barebox/
-│   │   ├── breadcrumb/
-│   │   ├── button/
-│   │   ├── checkbox/
-│   │   ├── collapsible/
-│   │   ├── dropdown-menu/
-│   │   ├── input/
-│   │   ├── separator/
-│   │   ├── skeleton/
-│   │   ├── sidebar/
-│   │   ├── tooltip/
-│   │   ├── EditableTimer.vue
-│   │   └── EditableTitle.vue
+│   │   └── *.vue
 │   ├── AppSidebar.vue
 │   ├── NavMain.vue
 │   ├── NavProjects.vue
@@ -83,16 +45,7 @@ src/
 
 ---
 
-## Code Style Guidelines
-
-### General Rules
-
-- **NO comments** unless explicitly required by the user
-- Use **Composition API** (`<script setup>`) for all Vue components
-- Use **TypeScript** for all files - avoid `any`
-- Prefer **single quotes** for strings (Prettier config)
-- **No semicolons** (Prettier config)
-- **Print width**: 100 characters
+## Code Style
 
 ### Imports
 
@@ -104,142 +57,11 @@ Order imports consistently:
 4. Internal lib/utils (`@/lib/...`, `@/stores/...`)
 5. Types (`@/types`)
 
-```typescript
-// Correct
-import { ref, computed } from 'vue'
-import { Trash2Icon } from 'lucide-vue-next'
-import { Item, ItemContent } from '@/components/ui/BareBox'
-import Button from '../ui/button/Button.vue'
-import type { Task } from '@/types'
-import { useLocalStorage } from '@/lib/useLocalStorage'
-```
-
-### Vue Components
-
-- Use `<script setup lang="ts">` for all components
-- Define props with `defineProps()` - prefer object syntax for better typing
-- Use `defineEmits()` for events
-- Use `markRaw()` for non-reactive component references (e.g., passing Vue components to dynamic rendering)
-
-```typescript
-// Props example
-const props = defineProps({
-  storageId: {
-    type: String,
-    required: true,
-  },
-})
-
-// Emits example
-const emit = defineEmits<{
-  add: [component: ReturnType<typeof markRaw>, boxId: string]
-}>()
-```
-
 ### State Management (Pinia)
 
-- Use Composition API stores with `defineStore()` and function setup
-- Name stores with `use*Store` pattern (e.g., `useThemeStore`, `useCounterStore`)
+Use Composition API stores with `defineStore()` and function setup. Name stores with `use*Store` pattern.
 
-### Types
-
-- Define shared types in `src/types.ts`
-- Use interfaces for objects, types for unions/primitives
-- Avoid `any` - use `unknown` when type is truly unknown
-
-```typescript
-// Good
-interface Task {
-  id: string
-  title: string
-  done: boolean
-}
-
-// Avoid
-type Task = { id: string; title: string; done: boolean } // use interface instead
-```
-
-### Naming Conventions
-
-- **Components**: PascalCase (e.g., `HabitBox.vue`, `TodoBox.vue`)
-- **Files**: kebab-case (e.g., `use-local-storage.ts`)
-- **Variables/functions**: camelCase
-- **Constants**: SCREAMING_SNAKE_CASE (only for true constants)
-- **CSS classes**: kebab-case (Tailwind convention)
-
-### Error Handling
-
-- Use try/catch for async operations with meaningful error messages
-- Log errors to console with context
-- Handle localStorage parse errors gracefully (see App.vue for example)
-
-```typescript
-try {
-  const parsed = JSON.parse(savedLayout)
-} catch (e) {
-  console.error('Failed to parse saved layout', e)
-  localStorage.removeItem('dashboardLayout')
-}
-```
-
-### TailwindCSS
-
-- Use Tailwind utility classes directly in templates
-- Use `@apply` sparingly - only for reusable patterns in `<style>`
-- Theme variables are defined in `style.css` (`:root` and `.dark`)
-- Use `cn()` utility from `@/lib/utils` for conditional class merging
-
----
-
-## Key Features
-
-- **Draggable Dashboard**: Uses swapy for drag-and-drop box arrangement
-- **Persistent Layout**: Dashboard layout saved to localStorage with deduplication
-- **Box Types**: HabitBox, TimerBox, TodoBox, DateBox, RoadMap, AddBox
-- **Theme Toggle**: Dark/light mode with system preference detection
-- **Timer**: Countdown timer with audio feedback
-- **Todo**: Task list with checkboxes, localStorage persistence
-
----
-
-## Core Types (`src/types.ts`)
-
-```typescript
-interface Task {
-  id: string
-  title: string
-  done: boolean
-}
-
-interface TimerState {
-  endTime: number | null // timestamp in ms
-  remaining: number
-  running: boolean
-}
-```
-
----
-
-## Testing
-
-Tests live in `src/__tests__/` and use `@vue/test-utils` with jsdom.
-
-```typescript
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
-import App from '../App.vue'
-
-describe('App', () => {
-  it('mounts renders properly', () => {
-    const wrapper = mount(App)
-    expect(wrapper.text()).toContain('Dashboard')
-  })
-})
-```
-
----
-
-## LocalStorage Pattern
+### LocalStorage Pattern
 
 Use the `useLocalStorage` composable for reactive localStorage:
 
@@ -251,8 +73,6 @@ const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
 ```
 
-This provides automatic reactivity and JSON serialization.
-
 ---
 
 ## Scaffolding New Boxes
@@ -260,26 +80,29 @@ This provides automatic reactivity and JSON serialization.
 To create a new box component:
 
 1. Create `src/components/Boxes/YourBoxName.vue`
-2. Import required components:
+2. Import required components and use localStorage:
+
    ```typescript
    import { Item, ItemContent } from '@/components/ui/BareBox'
    import EditableTitle from '../ui/EditableTitle.vue'
    import { useLocalStorage } from '@/lib/useLocalStorage'
-   ```
-3. Define props with `storageId`:
-   ```typescript
+
    const props = defineProps({
      storageId: {
        type: String,
        required: true,
      },
    })
-   ```
-4. Use localStorage pattern:
-   ```typescript
+
    const storageKey = `YourBoxName:${props.storageId}`
    const data = useLocalStorage<YourType>(storageKey, defaultValue)
    ```
-5. Add to `AddBox.vue`:
+
+3. Add to `AddBox.vue`:
    - Import the component
    - Add a `DropdownMenuItem` with `markRaw(YourComponent)`
+4. Add to `App.vue`:
+   - Import the component
+   - Add it to `BOX_COMPONENTS` with a unique key (e.g., `journal: markRaw(JournalBox)`)
+
+   This is required for the box to be saved and restored on page reload.
