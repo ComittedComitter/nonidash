@@ -27,7 +27,6 @@ import {
   watch,
   markRaw,
   nextTick,
-  type Ref,
   type Raw,
   type Component,
 } from 'vue'
