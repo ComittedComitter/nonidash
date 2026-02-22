@@ -1,6 +1,6 @@
 # Nonidash (habits)
 
-A Vue 3 + Vite dashboard application for tracking habits, timers, todos, dates, and roadmaps with draggable boxes.
+A dashboard application for tracking habits, timers, todos with draggable boxes.
 
 ## Tech Stack
 
@@ -17,53 +17,15 @@ A Vue 3 + Vite dashboard application for tracking habits, timers, todos, dates, 
 
 ---
 
-## Commands
-
-```bash
-# Development
-npm run dev              # Start dev server with hot reload
-
-# Build
-npm run build            # Type-check + build for production
-npm run build-only       # Build only (skip type-check)
-npm run preview          # Preview production build
-
-# Testing
-npm run test:unit        # Run all tests
-npm run test:unit -- src/__tests__/App.spec.ts    # Run single test file
-npm run test:unit -- --run   # Run tests once (not watch mode)
-npm run test:unit -- --ui   # Run with Vitest UI
-
-# Code Quality
-npm run lint             # Lint and auto-fix
-npm run type-check       # TypeScript check
-npm run format           # Format with Prettier
-```
-
----
-
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   ├── HabitBoxes/       # Dashboard widgets (HabitBox, TimerBox, TodoBox, etc.)
+│   ├── Boxes/            # Dashboard widgets (HabitBox, TimerBox, TodoBox, etc.) Put new boxes here
 │   │   └── *.vue
 │   ├── ui/               # Reusable shadcn-style components
-│   │   ├── avatar/
-│   │   ├── barebox/
-│   │   ├── breadcrumb/
-│   │   ├── button/
-│   │   ├── checkbox/
-│   │   ├── collapsible/
-│   │   ├── dropdown-menu/
-│   │   ├── input/
-│   │   ├── separator/
-│   │   ├── skeleton/
-│   │   ├── sidebar/
-│   │   ├── tooltip/
-│   │   ├── EditableTimer.vue
-│   │   └── EditableTitle.vue
+│   │   ├── *.vue
 │   ├── AppSidebar.vue
 │   ├── NavMain.vue
 │   ├── NavProjects.vue
@@ -87,11 +49,10 @@ src/
 
 ### General Rules
 
-- **NO comments** unless explicitly required by the user
 - Use **Composition API** (`<script setup>`) for all Vue components
 - Use **TypeScript** for all files - avoid `any`
-- Prefer **single quotes** for strings (Prettier config)
-- **No semicolons** (Prettier config)
+- Prefer **single quotes** for strings 
+- **No semicolons** 
 - **Print width**: 100 characters
 
 ### Imports
@@ -187,35 +148,6 @@ try {
 - Use `@apply` sparingly - only for reusable patterns in `<style>`
 - Theme variables are defined in `style.css` (`:root` and `.dark`)
 - Use `cn()` utility from `@/lib/utils` for conditional class merging
-
----
-
-## Key Features
-
-- **Draggable Dashboard**: Uses swapy for drag-and-drop box arrangement
-- **Persistent Layout**: Dashboard layout saved to localStorage with deduplication
-- **Box Types**: HabitBox, TimerBox, TodoBox, DateBox, RoadMap, AddBox
-- **Theme Toggle**: Dark/light mode with system preference detection
-- **Timer**: Countdown timer with audio feedback
-- **Todo**: Task list with checkboxes, localStorage persistence
-
----
-
-## Core Types (`src/types.ts`)
-
-```typescript
-interface Task {
-  id: string
-  title: string
-  done: boolean
-}
-
-interface TimerState {
-  endTime: number | null  // timestamp in ms
-  remaining: number
-  running: boolean
-}
-```
 
 ---
 
