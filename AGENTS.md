@@ -58,6 +58,7 @@ src/
 ### Imports
 
 Order imports consistently:
+
 1. Vue/framework imports (`vue`, `vue-router`, `pinia`)
 2. External libraries (`lucide-vue-next`, `reka-ui`, etc.)
 3. Internal components (`@/components/...`)
@@ -183,3 +184,34 @@ const tasks = useLocalStorage<Task[]>(storageKey, [])
 ```
 
 This provides automatic reactivity and JSON serialization.
+
+---
+
+## Scaffolding New Boxes
+
+To create a new box component:
+
+1. Create `src/components/Boxes/YourBoxName.vue`
+2. Import required components:
+   ```typescript
+   import { Item, ItemContent } from '@/components/ui/BareBox'
+   import EditableTitle from '../ui/EditableTitle.vue'
+   import { useLocalStorage } from '@/lib/useLocalStorage'
+   ```
+3. Define props with `storageId`:
+   ```typescript
+   const props = defineProps({
+     storageId: {
+       type: String,
+       required: true,
+     },
+   })
+   ```
+4. Use localStorage pattern:
+   ```typescript
+   const storageKey = `YourBoxName:${props.storageId}`
+   const data = useLocalStorage<YourType>(storageKey, defaultValue)
+   ```
+5. Add to `AddBox.vue`:
+   - Import the component
+   - Add a `DropdownMenuItem` with `markRaw(YourComponent)`
