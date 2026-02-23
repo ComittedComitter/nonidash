@@ -7,6 +7,7 @@ import { ref, computed, watch, type PropType } from 'vue'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@/lib/useLocalStorage'
 import { useConfetti } from '@/lib/useConfetti'
+import { useXp } from '@/lib/useXp'
 import { PlusIcon, MinusIcon } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -34,7 +35,8 @@ const days = [
 ]
 
 const selected = useLocalStorage<number[]>('days', [])
-const target = ref(5)
+const target = useLocalStorage(`habitbox:${props.storageId}:target`, 5)
+const { addXp } = useXp()
 const targetPercentage = computed(() => 100 / target.value)
 
 function increaseTarget() {
@@ -52,6 +54,7 @@ watch(
   (newLength, oldLength) => {
     if (oldLength < target.value && newLength >= target.value) {
       fireConfetti(itemRef.value)
+      addXp(10)
     }
   },
 )
