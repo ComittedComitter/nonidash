@@ -7,6 +7,7 @@ import EditableTitle from '../ui/EditableTitle.vue'
 import EditableTimer from '../ui/EditableTimer.vue'
 import Done from '@/assets/sounds/doneLong.mp3'
 import { useConfetti } from '@/lib/useConfetti'
+import { useXp } from '@/lib/useXp'
 
 const props = defineProps({
   storageId: {
@@ -21,6 +22,7 @@ const props = defineProps({
 
 const { fireConfetti } = useConfetti()
 const itemRef = ref<HTMLElement | null>(null)
+const { addXp } = useXp()
 
 const duration = ref(10) // seconds
 const now = ref(Date.now())
@@ -107,11 +109,16 @@ watch(remaining, (value) => {
   }
 })
 
+// --------------------
+// Add or discard time
+// to the total
+// --------------------
 function addTime() {
   const elapsed = duration.value
   addToTotal(elapsed)
   fireConfetti(itemRef.value)
   resetTimer()
+  addXp(10)
 }
 
 function discardTime() {

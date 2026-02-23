@@ -131,13 +131,13 @@ const props = defineProps({
           V1.6 <span class="font-normal text-sm text-gray-400">XP system</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Progress Bar to sidebar</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Progress Bar to sidebar</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Habit xp once a day</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Level Display</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Level Display</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Levelup Animation</ItemContent>

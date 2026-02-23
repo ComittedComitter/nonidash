@@ -36,8 +36,26 @@ const days = [
 
 const selected = useLocalStorage<number[]>('days', [])
 const target = useLocalStorage(`habitbox:${props.storageId}:target`, 5)
+const lastXpDate = useLocalStorage<number | null>(`habitbox:${props.storageId}:lastXp`, null)
 const { addXp } = useXp()
 const targetPercentage = computed(() => 100 / target.value)
+
+function getWeekNumber(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  const dayNum = d.getUTCDay() || 7
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum)
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
+}
+
+function isNewWeek(timestamp: number | null): boolean {
+  if (!timestamp) return true
+  const lastDate = new Date(timestamp)
+  const now = new Date()
+  return (
+    getWeekNumber(lastDate) !== getWeekNumber(now) || lastDate.getFullYear() !== now.getFullYear()
+  )
+}
 
 function increaseTarget() {
   if (target.value === 7) return
@@ -53,8 +71,11 @@ watch(
   () => selected.value.length,
   (newLength, oldLength) => {
     if (oldLength < target.value && newLength >= target.value) {
-      fireConfetti(itemRef.value)
-      addXp(10)
+      if (isNewWeek(lastXpDate.value)) {
+        fireConfetti(itemRef.value)
+        addXp(10)
+        lastXpDate.value = Date.now()
+      }
     }
   },
 )
