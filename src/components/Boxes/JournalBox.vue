@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, type PropType } from 'vue'
 import { Item } from '@/components/ui/BareBox'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@/lib/useLocalStorage'
@@ -8,6 +8,10 @@ const props = defineProps({
   storageId: {
     type: String,
     required: true,
+  },
+  onRemove: {
+    type: Function as PropType<(boxId: string) => void>,
+    required: false,
   },
 })
 
@@ -48,7 +52,11 @@ const currentEntry = computed({
 </script>
 
 <template>
-  <Item variant="outline" class="grid grid-rows-[auto_1fr]">
+  <Item
+    variant="outline"
+    class="grid grid-rows-[auto_1fr]"
+    @remove="props.onRemove?.(props.storageId)"
+  >
     <EditableTitle model-value="Journal" />
     <div class="flex flex-col h-full">
       <div class="flex gap-1 justify-center py-2 overflow-x-auto" data-swapy-no-drag>

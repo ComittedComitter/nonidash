@@ -51,7 +51,7 @@ const themeStore = useThemeStore()
           >
             <Avatar class="h-8 w-8 rounded-lg">
               <AvatarImage :src="user.avatar" :alt="user.name" />
-              <AvatarFallback class="rounded-lg"> CN </AvatarFallback>
+              <AvatarFallback class="rounded-lg"> MO </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
               <span class="truncate font-medium">{{ user.name }}</span>

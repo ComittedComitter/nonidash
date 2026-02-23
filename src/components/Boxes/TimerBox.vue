@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { Item } from '@/components/ui/BareBox'
 import { Button } from '../ui/button'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, type PropType } from 'vue'
 import { type TimerState } from '@/types'
 import EditableTitle from '../ui/EditableTitle.vue'
 import EditableTimer from '../ui/EditableTimer.vue'
 import Done from '@/assets/sounds/doneLong.mp3'
 import { useConfetti } from '@/lib/useConfetti'
+
+const props = defineProps({
+  storageId: {
+    type: String,
+    required: true,
+  },
+  onRemove: {
+    type: Function as PropType<(boxId: string) => void>,
+    required: false,
+  },
+})
 
 const { fireConfetti } = useConfetti()
 const itemRef = ref<HTMLElement | null>(null)
@@ -142,7 +153,11 @@ const playSound = () => {
 
 <template>
   <div ref="itemRef">
-    <Item variant="outline" class="grid grid-rows-[auto_1fr]">
+    <Item
+      variant="outline"
+      class="grid grid-rows-[auto_1fr]"
+      @remove="props.onRemove?.(props.storageId)"
+    >
       <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
       <div class="flex flex-col gap-3 justify-center items-center">
         <div v-if="finished" class="text-2xl font-bold text-red-700">Finished!</div>

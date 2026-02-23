@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import { Item, ItemContent } from '@/components/ui/BareBox'
 import { Checkbox } from '@/components/ui/checkbox'
+import type { PropType } from 'vue'
+
+const props = defineProps({
+  storageId: {
+    type: String,
+    required: true,
+  },
+  onRemove: {
+    type: Function as PropType<(boxId: string) => void>,
+    required: false,
+  },
+})
 </script>
 
 <template>
-  <Item variant="outline" class="items-start p-10 content-start">
+  <Item
+    variant="outline"
+    class="items-start p-10 content-start"
+    @remove="props.onRemove?.(props.storageId)"
+  >
     <h2 class="text-3xl font-bold w-xl">Noni Roadmap</h2>
     <div class="grid grid-cols-2 gap-4">
       <div class="">
@@ -98,13 +114,13 @@ import { Checkbox } from '@/components/ui/checkbox'
           V1.5 <span class="font-normal text-sm text-gray-400">Journal</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Local Storage</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Text entry</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Text entry</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Daily note UI</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Daily note UI</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Daily prompt (+ toggle)</ItemContent>

@@ -3,11 +3,22 @@ import { Item, ItemTitle } from '@/components/ui/BareBox'
 import CheckCircle from '@/components/ui/checkbox/CheckCircle.vue'
 import { Progress } from '@/components/ui/progress'
 import { CheckboxGroupRoot } from 'reka-ui'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, type PropType } from 'vue'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@/lib/useLocalStorage'
 import { useConfetti } from '@/lib/useConfetti'
 import { PlusIcon, MinusIcon } from 'lucide-vue-next'
+
+const props = defineProps({
+  storageId: {
+    type: String,
+    required: true,
+  },
+  onRemove: {
+    type: Function as PropType<(boxId: string) => void>,
+    required: false,
+  },
+})
 
 const { fireConfetti } = useConfetti()
 const itemRef = ref<HTMLElement | null>(null)
@@ -48,7 +59,11 @@ watch(
 
 <template>
   <div ref="itemRef">
-    <Item variant="outline" class="grid grid-rows-[auto_1fr] gap-0">
+    <Item
+      variant="outline"
+      class="grid grid-rows-[auto_1fr] gap-0"
+      @remove="props.onRemove?.(props.storageId)"
+    >
       <div class="justify-self-end flex items-center group" data-swapy-no-drag>
         <MinusIcon
           @click="decreaseTarget"

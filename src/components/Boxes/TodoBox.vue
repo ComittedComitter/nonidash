@@ -2,7 +2,7 @@
 import { Item, ItemContent } from '@/components/ui/BareBox'
 import { Input } from '../ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ref } from 'vue'
+import { ref, type PropType } from 'vue'
 import Button from '../ui/button/Button.vue'
 import type { Task } from '@/types'
 import { useLocalStorage } from '@/lib/useLocalStorage'
@@ -13,6 +13,10 @@ const props = defineProps({
   storageId: {
     type: String,
     required: true,
+  },
+  onRemove: {
+    type: Function as PropType<(boxId: string) => void>,
+    required: false,
   },
 })
 
@@ -44,7 +48,11 @@ function removeTask(id: string) {
 </script>
 
 <template>
-  <Item variant="outline" class="grid grid-rows-[auto_1fr]">
+  <Item
+    variant="outline"
+    class="grid grid-rows-[auto_1fr]"
+    @remove="props.onRemove?.(props.storageId)"
+  >
     <EditableTitle model-value="To Do" />
     <form @submit.prevent="formSubmitted" class="flex flex-col justify-between h-full">
       <div>

@@ -5,6 +5,7 @@ import type { ItemVariants } from '.'
 import { Primitive } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { itemVariants } from '.'
+import { X } from 'lucide-vue-next'
 
 const props = withDefaults(
   defineProps<
@@ -18,6 +19,10 @@ const props = withDefaults(
     as: 'div',
   },
 )
+
+const emit = defineEmits<{
+  remove: []
+}>()
 </script>
 
 <template>
@@ -37,6 +42,12 @@ const props = withDefaults(
       )
     "
   >
+    <button
+      class="absolute top-2 right-2 opacity-0 group-hover/item:opacity-100 transition-opacity p-1 hover:bg-destructive/20 rounded-md"
+      @click.stop="emit('remove')"
+    >
+      <X class="w-4 h-4 text-destructive" />
+    </button>
     <slot />
   </Primitive>
 </template>

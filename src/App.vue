@@ -100,6 +100,13 @@ function addBox(component: Raw<Component>, boxId: string) {
   saveBoxes()
 }
 
+function removeBox(boxId: string) {
+  activeBoxes.value = activeBoxes.value.filter((b) => b.boxId !== boxId)
+  slotItemMap.value = slotItemMap.value.filter((s) => s.item !== boxId)
+  saveBoxes()
+  localStorage.setItem(LAYOUT_KEY, JSON.stringify(slotItemMap.value))
+}
+
 const slotItemMap = ref(utils.initSlotItemMap(activeBoxes.value, 'boxId'))
 const slottedItems = computed(() =>
   utils.toSlottedItems(activeBoxes.value, 'boxId', slotItemMap.value),
@@ -204,7 +211,7 @@ onUnmounted(() => {
             :class="item?.rowSpan === 2 ? 'row-span-2 min-h-[60vh]' : ''"
           >
             <div v-if="item" class="item h-full" :data-swapy-item="itemId" :key="itemId">
-              <component :is="item.component" :storageId="itemId" />
+              <component :is="item.component" :storageId="itemId" :onRemove="removeBox" />
             </div>
           </div>
         </div>

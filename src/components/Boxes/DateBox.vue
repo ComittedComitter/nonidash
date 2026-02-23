@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { Item } from '@/components/ui/BareBox'
-import { ref } from 'vue'
+import { ref, type PropType } from 'vue'
+
+const props = defineProps({
+  storageId: {
+    type: String,
+    required: true,
+  },
+  onRemove: {
+    type: Function as PropType<(boxId: string) => void>,
+    required: false,
+  },
+})
 
 const today = ref(new Date().toLocaleDateString('en-US', { weekday: 'long' }))
 const dayNumber = new Date().getDate()
@@ -21,8 +32,8 @@ setInterval(() => {
 </script>
 
 <template>
-  <Item variant="outline" class="p-8 content-center">
-    <h2 class="text-8xl font-bold w-xl">
+  <Item variant="outline" class="p-8 content-center" @remove="props.onRemove?.(props.storageId)">
+    <h2 class="text-8xl font-bold w-full">
       {{ time }}
     </h2>
     <h2 class="text-5xl text-neutral-400 font-bold">{{ today }} {{ dayNumber }}</h2>
