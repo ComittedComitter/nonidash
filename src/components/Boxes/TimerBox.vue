@@ -165,7 +165,12 @@ const playSound = () => {
       class="grid grid-rows-[auto_1fr]"
       @remove="props.onRemove?.(props.storageId)"
     >
-      <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
+      <div class="flex justify-between">
+        <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
+        <div v-if="!finished" class="text-sm text-muted">
+          Weekly Total: {{ totalTimeFormatted }}
+        </div>
+      </div>
       <div class="flex flex-col gap-3 justify-center items-center">
         <div v-if="finished" class="text-2xl font-bold text-red-700">Finished!</div>
         <h3 v-else-if="timerState.running" class="text-5xl font-bold">{{ timeFormatted }}</h3>
@@ -175,9 +180,6 @@ const playSound = () => {
           @update:model-value="stopTimer"
           class="text-5xl font-bold"
         />
-        <div v-if="!finished" class="text-sm text-muted-foreground">
-          Total: {{ totalTimeFormatted }}
-        </div>
         <div class="flex gap-3" data-swapy-no-drag>
           <template v-if="finished">
             <Button @click="addTime">Add</Button>

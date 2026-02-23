@@ -33,7 +33,7 @@ setInterval(() => {
 
 <template>
   <Item variant="outline" class="p-8 content-center" @remove="props.onRemove?.(props.storageId)">
-    <h2 class="text-8xl font-bold w-full">
+    <h2 class="text-8xl font-bold w-full 3xl:text-9xl">
       {{ time }}
     </h2>
     <h2 class="text-5xl text-neutral-400 font-bold">{{ today }} {{ dayNumber }}</h2>
