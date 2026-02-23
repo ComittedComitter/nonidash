@@ -15,6 +15,7 @@ import NavMain from '@/components/NavMain.vue'
 import NavProjects from '@/components/NavProjects.vue'
 import NavUser from '@/components/NavUser.vue'
 import XpBar from '@/components/ui/XpBar.vue'
+import DailyReward from './ui/DailyReward.vue'
 import TeamSwitcher from '@/components/TeamSwitcher.vue'
 
 import {
@@ -131,6 +132,7 @@ const data = {
       <NavMain :items="data.navMain" />
     </SidebarContent>
     <SidebarFooter>
+      <DailyReward />
       <XpBar />
       <NavUser :user="data.user" />
     </SidebarFooter>
