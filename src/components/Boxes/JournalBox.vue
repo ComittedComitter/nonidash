@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from 'vue'
 import { Item } from '@/components/ui/BareBox'
+import Textarea from '../ui/textarea/Textarea.vue'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@/lib/useLocalStorage'
 
@@ -57,8 +58,8 @@ const currentEntry = computed({
     class="grid grid-rows-[auto_1fr]"
     @remove="props.onRemove?.(props.storageId)"
   >
-    <EditableTitle model-value="Journal" />
-    <div class="flex flex-col h-full">
+    <div class="flex justify-between">
+      <EditableTitle model-value="Journal" />
       <div class="flex gap-1 justify-center py-2 overflow-x-auto" data-swapy-no-drag>
         <button
           v-for="day in orderedDays"
@@ -72,9 +73,12 @@ const currentEntry = computed({
           {{ DAY_LABELS[(day as number) - 1] }}
         </button>
       </div>
-      <textarea
+    </div>
+    <div class="flex flex-col h-full">
+      <Textarea
         v-model="currentEntry"
-        class="flex-1 w-full resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-2 text-sm"
+        data-swapy-no-drag
+        class="flex-1 w-full resize-none"
         placeholder="Write your journal entry..."
       />
     </div>
