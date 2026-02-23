@@ -9,7 +9,7 @@ const lastClaimedDay = useLocalStorage('daily-reward:lastClaimed', '')
 const { addXp } = useXp()
 
 function getTodayString(): string {
-  return new Date().toISOString().split('T')[0]
+  return new Date().toISOString().split('T')[0] ?? ''
 }
 
 const isAvailable = computed(() => lastClaimedDay.value !== getTodayString())

@@ -132,8 +132,12 @@ const data = {
       <NavMain :items="data.navMain" />
     </SidebarContent>
     <SidebarFooter>
-      <DailyReward />
-      <XpBar />
+      <div
+        class="transition-all duration-200 ease-linear group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:overflow-hidden"
+      >
+        <DailyReward />
+        <XpBar />
+      </div>
       <NavUser :user="data.user" />
     </SidebarFooter>
     <SidebarRail />

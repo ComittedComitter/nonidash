@@ -22,10 +22,10 @@ const props = defineProps({
     @remove="props.onRemove?.(props.storageId)"
   >
     <h2 class="text-3xl font-bold w-xl">Noni Roadmap</h2>
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 3xl:grid-cols-5 gap-4">
       <div class="">
         <div class="text-lg font-bold">
-          V1.0 <span class="font-normal text-sm text-gray-400">Foundations</span>
+          V0.1 <span class="font-normal text-sm text-gray-400">Foundations</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Habit tracker</ItemContent>
@@ -42,7 +42,7 @@ const props = defineProps({
       </div>
       <div class="">
         <div class="text-lg font-bold">
-          V1.1 <span class="font-normal text-sm text-gray-400">Interaction</span>
+          V0.2 <span class="font-normal text-sm text-gray-400">Interaction</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Progress Bar</ItemContent>
@@ -59,7 +59,7 @@ const props = defineProps({
       </div>
       <div class="">
         <div class="text-lg font-bold">
-          V1.2 <span class="font-normal text-sm text-gray-400">Todo</span>
+          V0.3 <span class="font-normal text-sm text-gray-400">Todo</span>
         </div>
 
         <div class="flex gap-3 items-center">
@@ -77,7 +77,7 @@ const props = defineProps({
       </div>
       <div class="">
         <div class="text-lg font-bold">
-          V1.3 <span class="font-normal text-sm text-gray-400">Habits</span>
+          V0.4 <span class="font-normal text-sm text-gray-400">Habits</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
@@ -94,7 +94,7 @@ const props = defineProps({
       </div>
       <div class="">
         <div class="text-lg font-bold">
-          V1.4 <span class="font-normal text-sm text-gray-400">Timer</span>
+          V0.5 <span class="font-normal text-sm text-gray-400">Timer</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
@@ -111,7 +111,7 @@ const props = defineProps({
       </div>
       <div>
         <div class="text-lg font-bold">
-          V1.5 <span class="font-normal text-sm text-gray-400">Journal</span>
+          V0.6 <span class="font-normal text-sm text-gray-400">Journal</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
@@ -128,13 +128,13 @@ const props = defineProps({
       </div>
       <div>
         <div class="text-lg font-bold">
-          V1.6 <span class="font-normal text-sm text-gray-400">XP system</span>
+          V0.7 <span class="font-normal text-sm text-gray-400">XP system</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Progress Bar to sidebar</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>XP bar in sidebar</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Habit xp once a day</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Habit xp once a day</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Level Display</ItemContent>
@@ -145,7 +145,7 @@ const props = defineProps({
       </div>
       <div>
         <div class="text-lg font-bold">
-          V1.7 <span class="font-normal text-sm text-gray-400">Color</span>
+          V0.8 <span class="font-normal text-sm text-gray-400">Color</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Color Picker</ItemContent>
@@ -162,7 +162,7 @@ const props = defineProps({
       </div>
       <div>
         <div class="text-lg font-bold">
-          V1.8 <span class="font-normal text-sm text-gray-400">Hello World</span>
+          V0.9 <span class="font-normal text-sm text-gray-400">Hello World</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Polish</ItemContent>
@@ -177,15 +177,16 @@ const props = defineProps({
           <Checkbox :default-value="false" /><ItemContent>Host</ItemContent>
         </div>
       </div>
+
       <div>
         <div class="text-lg font-bold">
-          V1.9 <span class="font-normal text-sm text-gray-400">Finish</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Bug fix</ItemContent>
+          V1.0 <span class="font-normal text-sm text-gray-400">Finish</span>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Ask for feedback</ItemContent>
+        </div>
+        <div class="flex gap-3 items-center">
+          <Checkbox :default-value="false" /><ItemContent>Bug fix</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>???</ItemContent>

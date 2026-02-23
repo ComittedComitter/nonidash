@@ -24,7 +24,7 @@ const { fireConfetti } = useConfetti()
 const itemRef = ref<HTMLElement | null>(null)
 const { addXp } = useXp()
 
-const duration = ref(10) // seconds
+const duration = ref(1800) // seconds
 const now = ref(Date.now())
 const finished = ref(false)
 
