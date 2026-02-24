@@ -103,7 +103,11 @@ watch(
       </div>
 
       <div class="flex flex-col place-self-center items-center text-center">
-        <EditableTitle class="text-4xl font-bold pb-2" model-value="Work on Noni" />
+        <EditableTitle
+          class="text-4xl font-bold pb-2"
+          model-value="Work on Noni"
+          :storage-key="`${storageId}:title`"
+        />
         <div class="py-2 flex xl:gap-4 lg:gap-2 gap-4">
           <CheckboxGroupRoot v-for="day in days" :key="day.id" v-model="selected">
             <label data-swapy-no-drag>

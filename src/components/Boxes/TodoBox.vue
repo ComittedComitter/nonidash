@@ -53,7 +53,7 @@ function removeTask(id: string) {
     class="grid grid-rows-[auto_1fr]"
     @remove="props.onRemove?.(props.storageId)"
   >
-    <EditableTitle model-value="To Do" />
+    <EditableTitle model-value="To Do" :storage-key="`${storageId}:title`" />
     <form @submit.prevent="formSubmitted" class="flex flex-col justify-between h-full">
       <div>
         <div class="flex gap-2 items-center">

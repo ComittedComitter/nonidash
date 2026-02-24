@@ -24,7 +24,20 @@ const { fireConfetti } = useConfetti()
 const itemRef = ref<HTMLElement | null>(null)
 const { addXp } = useXp()
 
-const duration = ref(1800) // seconds
+const DURATION_KEY = `timer-duration:${props.storageId}`
+const duration = ref<number>(loadDuration())
+
+function saveDuration(time: number) {
+  localStorage.setItem(DURATION_KEY, JSON.stringify(time))
+}
+
+function loadDuration(): number {
+  const saved = localStorage.getItem(DURATION_KEY)
+  return saved ? JSON.parse(saved) : 1800
+}
+
+watch(duration, saveDuration)
+
 const now = ref(Date.now())
 const finished = ref(false)
 
@@ -32,7 +45,7 @@ const finished = ref(false)
 //     Total Time
 // --------------------
 
-const TOTAL_TIME_KEY = 'timer-total-time'
+const TOTAL_TIME_KEY = `timer-total-time:${props.storageId}`
 const totalTime = ref<number>(loadTotalTime())
 watch(totalTime, saveTotalTime, { deep: true })
 
@@ -53,7 +66,7 @@ function addToTotal(seconds: number) {
 //     Persistence
 // --------------------
 
-const STORAGE_KEY = 'timer-state'
+const STORAGE_KEY = `timer-state:${props.storageId}`
 const timerState = ref<TimerState>(loadTimer())
 watch(timerState, saveTimer, { deep: true })
 
@@ -166,7 +179,11 @@ const playSound = () => {
       @remove="props.onRemove?.(props.storageId)"
     >
       <div class="flex justify-between">
-        <EditableTitle model-value="Timer" class="text-3xl font-bold pl-2" />
+        <EditableTitle
+          model-value="Timer"
+          class="text-3xl font-bold pl-2"
+          :storage-key="`${storageId}:title`"
+        />
         <div v-if="!finished" class="text-sm text-muted">
           Weekly Total: {{ totalTimeFormatted }}
         </div>

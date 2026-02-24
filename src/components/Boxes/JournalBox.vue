@@ -59,7 +59,7 @@ const currentEntry = computed({
     @remove="props.onRemove?.(props.storageId)"
   >
     <div class="flex justify-between">
-      <EditableTitle model-value="Journal" />
+      <EditableTitle model-value="Journal" :storage-key="`${storageId}:title`" />
       <div class="flex gap-1 justify-center py-2 overflow-x-auto" data-swapy-no-drag>
         <button
           v-for="day in orderedDays"
