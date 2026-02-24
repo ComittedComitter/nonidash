@@ -84,7 +84,7 @@ function loadBoxes(): BoxItem[] {
     { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
     { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
     { boxId: 'todo2', component: markRaw(TodoBox), rowSpan: 1 },
-    { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 2 },
+    { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 1 },
   ]
 }
 

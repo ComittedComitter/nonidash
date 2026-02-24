@@ -93,8 +93,9 @@ watch(
           @click="decreaseTarget"
           class="overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"
         />
-        <h1 class="mx-1 font-medium text-neutral-600 hidden group-hover:block">Target:</h1>
-        <h1 class="mx-1 font-medium text-neutral-600">{{ target }}</h1>
+        <h1 class="mx-1 font-medium text-muted group-hover:text-muted-foreground">
+          Target: {{ target }}
+        </h1>
         <PlusIcon
           @click="increaseTarget"
           class="overflow-hidden w-0 opacity-0 -translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"
@@ -103,7 +104,6 @@ watch(
 
       <div class="flex flex-col place-self-center items-center text-center">
         <EditableTitle class="text-4xl font-bold pb-2" model-value="Work on Noni" />
-
         <div class="py-2 flex xl:gap-4 lg:gap-2 gap-4">
           <CheckboxGroupRoot v-for="day in days" :key="day.id" v-model="selected">
             <label data-swapy-no-drag>
@@ -112,7 +112,6 @@ watch(
             </label>
           </CheckboxGroupRoot>
         </div>
-
         <Progress :model-value="Math.min(targetPercentage * selected.length, 100)" class="w-1/2" />
       </div>
     </Item>

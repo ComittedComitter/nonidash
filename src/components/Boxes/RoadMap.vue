@@ -123,7 +123,7 @@ const props = defineProps({
           <Checkbox :default-value="true" /><ItemContent>Daily note UI</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Daily prompt (+ toggle)</ItemContent>
+          <Checkbox :default-value="false" /><ItemContent>Daily prompt</ItemContent>
         </div>
       </div>
       <div>
