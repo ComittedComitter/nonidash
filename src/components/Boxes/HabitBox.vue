@@ -37,6 +37,7 @@ const days = [
 const selected = useLocalStorage<number[]>('days', [])
 const target = useLocalStorage(`habitbox:${props.storageId}:target`, 5)
 const lastXpDate = useLocalStorage<number | null>(`habitbox:${props.storageId}:lastXp`, null)
+const lastXpWeek = useLocalStorage<number | null>(`habitbox:${props.storageId}:lastXpWeek`, null)
 const { addXp } = useXp()
 const targetPercentage = computed(() => 100 / target.value)
 
@@ -48,13 +49,12 @@ function getWeekNumber(date: Date): number {
   return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
 }
 
-function isNewWeek(timestamp: number | null): boolean {
-  if (!timestamp) return true
-  const lastDate = new Date(timestamp)
+function isNewWeek(storedWeek: number | null, storedYearOrTimestamp: number | null): boolean {
+  if (storedWeek === null) return true
+  if (storedYearOrTimestamp === null) return true
+  if (storedYearOrTimestamp < 2000 || storedYearOrTimestamp > 2100) return true
   const now = new Date()
-  return (
-    getWeekNumber(lastDate) !== getWeekNumber(now) || lastDate.getFullYear() !== now.getFullYear()
-  )
+  return getWeekNumber(now) !== storedWeek || now.getFullYear() !== storedYearOrTimestamp
 }
 
 function increaseTarget() {
@@ -71,10 +71,12 @@ watch(
   () => selected.value.length,
   (newLength, oldLength) => {
     if (oldLength < target.value && newLength >= target.value) {
-      if (isNewWeek(lastXpDate.value)) {
+      if (isNewWeek(lastXpWeek.value, lastXpDate.value)) {
         fireConfetti(itemRef.value)
         addXp(10)
-        lastXpDate.value = Date.now()
+        const now = new Date()
+        lastXpDate.value = now.getFullYear()
+        lastXpWeek.value = getWeekNumber(now)
       }
     }
   },

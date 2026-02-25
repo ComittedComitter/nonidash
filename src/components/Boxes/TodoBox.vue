@@ -21,6 +21,7 @@ const props = defineProps({
 })
 
 const newTask = ref('')
+const inputRef = ref<InstanceType<typeof Input> | null>(null)
 const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
 
@@ -45,19 +46,24 @@ function removeTask(id: string) {
     tasks.value.splice(index, 1)
   }
 }
+
+function focusInput() {
+  inputRef.value?.$el?.focus()
+}
 </script>
 
 <template>
   <Item
     variant="outline"
     class="grid grid-rows-[auto_1fr]"
+    @click="focusInput"
     @remove="props.onRemove?.(props.storageId)"
   >
-    <EditableTitle model-value="To Do" :storage-key="`${storageId}:title`" />
+    <EditableTitle model-value="To Do" :storage-key="`${storageId}:title`" @click.stop />
     <form @submit.prevent="formSubmitted" class="flex flex-col justify-between h-full">
       <div>
         <div class="flex gap-2 items-center">
-          <EditableTitle model-value="Title" class="font-bold text-base" />
+          <EditableTitle model-value="Title" class="font-bold text-base" @click.stop />
           <!-- <EditableTitle model-value="Subtitle" class="font-normal text-base text-gray-400" /> -->
         </div>
         <div class="py-2" v-if="tasks">
@@ -74,7 +80,7 @@ function removeTask(id: string) {
         </div>
       </div>
       <div class="flex space-x-2 py-1" data-swapy-no-drag>
-        <Input v-model="newTask" placeholder="New Task" />
+        <Input ref="inputRef" v-model="newTask" placeholder="New Task" />
         <Button type="submit"> Add </Button>
       </div>
     </form>

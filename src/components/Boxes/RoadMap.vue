@@ -165,10 +165,10 @@ const props = defineProps({
           V0.9 <span class="font-normal text-sm text-gray-400">Hello World</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Polish</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Polish</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Domain</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Domain</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Build</ItemContent>

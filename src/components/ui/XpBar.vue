@@ -16,7 +16,14 @@ const { xp, level, addXp } = useXp()
 
 const progress = computed(() => (xp.value / props.maxXp) * 100)
 
-defineExpose({ addXp })
+function flashAddXp(amount: number) {
+  addXp(amount)
+  // setTimeout(() => {
+  //   isFlashing.value = false
+  // }, 1000)
+}
+
+defineExpose({ addXp: flashAddXp })
 </script>
 
 <template>
