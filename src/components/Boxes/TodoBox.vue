@@ -47,6 +47,10 @@ function removeTask(id: string) {
   }
 }
 
+function toggleTask(task: Task) {
+  task.done = !task.done
+}
+
 function focusInput() {
   inputRef.value?.$el?.focus()
 }
@@ -67,13 +71,18 @@ function focusInput() {
           <!-- <EditableTitle model-value="Subtitle" class="font-normal text-base text-gray-400" /> -->
         </div>
         <div class="py-2" v-if="tasks">
-          <div v-for="task in tasks" :key="task.id" class="flex gap-3 items-center group">
-            <Checkbox v-model="task.done" data-swapy-no-drag /><ItemContent
+          <div
+            v-for="task in tasks"
+            :key="task.id"
+            class="flex gap-3 items-center group p-0.5 rounded-sm hover:bg-accent cursor-pointer"
+            @click="toggleTask(task)"
+          >
+            <Checkbox v-model="task.done" data-swapy-no-drag @click.stop /><ItemContent
               :class="{ 'line-through': task.done }"
               >{{ task.title }}</ItemContent
             >
             <Trash2Icon
-              @click="removeTask(task.id)"
+              @click.stop="removeTask(task.id)"
               class="h-4 overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"
             />
           </div>
