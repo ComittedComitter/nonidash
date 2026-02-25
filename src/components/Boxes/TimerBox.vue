@@ -155,6 +155,9 @@ function stopTimer() {
 
 const timeFormatted = computed(() => formatTime(remaining.value))
 const totalTimeFormatted = computed(() => formatTime(totalTime.value))
+const displayTime = computed(() =>
+  timerState.value.running ? remaining.value : timerState.value.remaining,
+)
 
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60)
@@ -193,8 +196,13 @@ const playSound = () => {
         <h3 v-else-if="timerState.running" class="text-5xl font-bold">{{ timeFormatted }}</h3>
         <EditableTimer
           v-else-if="!finished"
-          v-model="duration"
-          @update:model-value="stopTimer"
+          :model-value="displayTime"
+          @update:model-value="
+            (val) => {
+              duration = val
+              stopTimer()
+            }
+          "
           class="text-5xl font-bold"
         />
         <div class="flex gap-3" data-swapy-no-drag>
