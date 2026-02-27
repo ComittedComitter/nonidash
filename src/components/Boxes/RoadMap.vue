@@ -148,7 +148,7 @@ const props = defineProps({
           V0.8 <span class="font-normal text-sm text-gray-400">Color</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Color Picker</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Color Picker</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Color on completetion</ItemContent>
