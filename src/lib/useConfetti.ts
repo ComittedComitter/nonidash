@@ -1,7 +1,10 @@
 import confetti from 'canvas-confetti'
 import type { Options } from 'canvas-confetti'
+import { useLocalStorage } from '@/lib/useLocalStorage'
 
 export function useConfetti() {
+  const userColor = useLocalStorage('user-color', '#e879f9')
+
   function fireConfetti(element?: HTMLElement | null) {
     if (!element) {
       confetti()
@@ -15,7 +18,7 @@ export function useConfetti() {
     confetti({
       spread: 70,
       origin: { x, y },
-      colors: ['#bb0000', '#ffffff'],
+      colors: [userColor.value, '#ffffff'],
     } as Options)
   }
 

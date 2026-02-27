@@ -192,7 +192,7 @@ const playSound = () => {
         </div>
       </div>
       <div class="flex flex-col gap-3 justify-center items-center">
-        <div v-if="finished" class="text-2xl font-bold text-red-700">Finished!</div>
+        <div v-if="finished" class="text-2xl font-bold text-user">Finished!</div>
         <h3 v-else-if="timerState.running" class="text-5xl font-bold">{{ timeFormatted }}</h3>
         <EditableTimer
           v-else-if="!finished"

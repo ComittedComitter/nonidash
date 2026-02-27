@@ -8,6 +8,7 @@ import {
   Sparkles,
   Moon,
   Sun,
+  Palette,
 } from 'lucide-vue-next'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -27,6 +28,8 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { useThemeStore } from '@/stores/theme'
+import { useLocalStorage } from '@/lib/useLocalStorage'
+import { watch } from 'vue'
 
 defineProps<{
   user: {
@@ -38,6 +41,18 @@ defineProps<{
 
 const { isMobile } = useSidebar()
 const themeStore = useThemeStore()
+
+const userColor = useLocalStorage('user-color', '#e879f9')
+const colorOptions = ['#e879f9', '#22d3ee', '#facc15']
+const premiumColorOptions = ['#5fd0a6', '#c10007']
+
+watch(
+  userColor,
+  (newColor) => {
+    document.documentElement.style.setProperty('--user-color', newColor)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -51,7 +66,7 @@ const themeStore = useThemeStore()
           >
             <Avatar class="h-8 w-8 rounded-lg">
               <AvatarImage :src="user.avatar" :alt="user.name" />
-              <AvatarFallback class="rounded-lg"> MO </AvatarFallback>
+              <AvatarFallback class="rounded-lg text-user"> MO </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
               <span class="truncate font-medium">{{ user.name }}</span>
@@ -83,6 +98,16 @@ const themeStore = useThemeStore()
             <DropdownMenuItem>
               <Sparkles />
               Upgrade to Pro
+              <div class="ml-auto flex gap-1.5">
+                <button
+                  v-for="color in premiumColorOptions"
+                  :key="color"
+                  @click.stop="userColor = color"
+                  class="h-4 w-4 rounded-full border-2 transition-transform hover:scale-110"
+                  :style="{ backgroundColor: color }"
+                  :class="userColor === color ? 'border-foreground' : 'border-transparent'"
+                />
+              </div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -90,6 +115,20 @@ const themeStore = useThemeStore()
             <DropdownMenuItem @click="themeStore.toggle()">
               <component :is="themeStore.isDark ? Sun : Moon" />
               {{ themeStore.isDark ? 'Light Mode' : 'Dark Mode' }}
+            </DropdownMenuItem>
+            <DropdownMenuItem class="cursor-pointer gap-2">
+              <Palette />
+              <span>Accent Color</span>
+              <div class="ml-auto flex gap-1.5">
+                <button
+                  v-for="color in colorOptions"
+                  :key="color"
+                  @click.stop="userColor = color"
+                  class="h-4 w-4 rounded-full border-2 transition-transform hover:scale-110"
+                  :style="{ backgroundColor: color }"
+                  :class="userColor === color ? 'border-foreground' : 'border-transparent'"
+                />
+              </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <BadgeCheck />

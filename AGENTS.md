@@ -7,7 +7,7 @@ reka-ui, @tabler/icons-vue, lucide-vue-next
 swapy
 @vueuse/core, class-variance-authority, clsx, tailwind-merge, zod
 Vitest with jsdom
- ESLint + Prettier
+ESLint + Prettier
 
 ---
 

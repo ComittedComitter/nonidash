@@ -17,7 +17,7 @@ const isTransitioning = ref(false)
 watch(
   () => props.modelValue,
   (newVal, oldVal) => {
-    if (newVal >= oldVal) {
+    if ((newVal ?? 0) >= (oldVal ?? 0)) {
       isTransitioning.value = true
       setTimeout(() => {
         isTransitioning.value = false
@@ -36,9 +36,11 @@ watch(
       data-slot="progress-indicator"
       v-bind="delegatedProps"
       :class="
-        cn(`h-full w-full flex-1 transition-all duration-300 bg-primary`, props.class, {
-          'bg-red-700': isTransitioning,
-        })
+        cn(
+          'h-full w-full flex-1 transition-all duration-300 bg-primary',
+          props.class,
+          isTransitioning && 'bg-user',
+        )
       "
       :style="`transform: translateX(-${100 - (props.modelValue ?? 0)}%);`"
     />
