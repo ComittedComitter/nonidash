@@ -1,19 +1,13 @@
-# Nonidash
-
-A dashboard application for tracking habits, timers, todos with draggable boxes.
-
-## Tech Stack
-
-- **Framework**: Vue 3 (Composition API) + TypeScript
-- **Build**: Vite
-- **State**: Pinia
-- **Routing**: Vue Router
-- **Styling**: TailwindCSS 4, tw-animate-css
-- **UI**: reka-ui, @tabler/icons-vue, lucide-vue-next
-- **Drag & Drop**: swapy
-- **Utilities**: @vueuse/core, class-variance-authority, clsx, tailwind-merge, zod
-- **Testing**: Vitest with jsdom
-- **Linting**: ESLint + Prettier
+Vue 3 (Composition API) + TypeScript
+Vite
+Pinia
+Vue Router
+TailwindCSS 4, tw-animate-css
+reka-ui, @tabler/icons-vue, lucide-vue-next
+swapy
+@vueuse/core, class-variance-authority, clsx, tailwind-merge, zod
+Vitest with jsdom
+ ESLint + Prettier
 
 ---
 
@@ -41,36 +35,6 @@ src/
 ├── main.ts                  # App entry point
 ├── style.css                # TailwindCSS + theme variables
 └── types.ts                 # Core type definitions
-```
-
----
-
-## Code Style
-
-### Imports
-
-Order imports consistently:
-
-1. Vue/framework imports (`vue`, `vue-router`, `pinia`)
-2. External libraries (`lucide-vue-next`, `reka-ui`, etc.)
-3. Internal components (`@/components/...`)
-4. Internal lib/utils (`@/lib/...`, `@/stores/...`)
-5. Types (`@/types`)
-
-### State Management (Pinia)
-
-Use Composition API stores with `defineStore()` and function setup. Name stores with `use*Store` pattern.
-
-### LocalStorage Pattern
-
-Use the `useLocalStorage` composable for reactive localStorage:
-
-```typescript
-import { useLocalStorage } from '@/lib/useLocalStorage'
-import type { Task } from '@/types'
-
-const storageKey = `TodoBox:${props.storageId}`
-const tasks = useLocalStorage<Task[]>(storageKey, [])
 ```
 
 ---

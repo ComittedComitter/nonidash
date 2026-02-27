@@ -154,7 +154,7 @@ const props = defineProps({
           <Checkbox :default-value="false" /><ItemContent>Color on completetion</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>XP Bar color</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>XP Bar color</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Avatar Picker</ItemContent>

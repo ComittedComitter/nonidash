@@ -75,9 +75,10 @@ function focusInput() {
             v-for="task in tasks"
             :key="task.id"
             class="flex gap-3 items-center group p-0.5 rounded-sm hover:bg-accent cursor-pointer"
+            data-swapy-no-drag
             @click="toggleTask(task)"
           >
-            <Checkbox v-model="task.done" data-swapy-no-drag @click.stop /><ItemContent
+            <Checkbox v-model="task.done" @click.stop /><ItemContent
               :class="{ 'line-through': task.done }"
               >{{ task.title }}</ItemContent
             >

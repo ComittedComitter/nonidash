@@ -122,6 +122,7 @@ const onKeydown = (e: KeyboardEvent) => {
     tabindex="0"
     spellcheck="false"
     contenteditable
+    data-swapy-no-drag
     :data-editing="isEditing"
     @click="startEditing"
     @blur="save"

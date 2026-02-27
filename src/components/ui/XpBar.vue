@@ -12,18 +12,9 @@ const props = withDefaults(
   },
 )
 
-const { xp, level, addXp } = useXp()
+const { xp, level, isTransitioning } = useXp()
 
 const progress = computed(() => (xp.value / props.maxXp) * 100)
-
-function flashAddXp(amount: number) {
-  addXp(amount)
-  // setTimeout(() => {
-  //   isFlashing.value = false
-  // }, 1000)
-}
-
-defineExpose({ addXp: flashAddXp })
 </script>
 
 <template>
@@ -32,6 +23,6 @@ defineExpose({ addXp: flashAddXp })
       <span class="font-medium text-foreground">Level {{ level }}</span>
       <span>{{ xp }} / {{ maxXp }} XP</span>
     </div>
-    <Progress :model-value="progress" class="h-1.5" />
+    <Progress :model-value="progress" :class="isTransitioning ? 'bg-red-500' : 'bg-primary'" />
   </div>
 </template>
