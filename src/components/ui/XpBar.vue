@@ -12,7 +12,7 @@ const props = withDefaults(
   },
 )
 
-const { xp, level, isTransitioning } = useXp()
+const { xp, level } = useXp()
 
 const progress = computed(() => (xp.value / props.maxXp) * 100)
 </script>
@@ -23,6 +23,6 @@ const progress = computed(() => (xp.value / props.maxXp) * 100)
       <span class="font-medium text-foreground">Level {{ level }}</span>
       <span>{{ xp }} / {{ maxXp }} XP</span>
     </div>
-    <Progress :model-value="progress" :class="isTransitioning ? 'bg-red-500' : 'bg-primary'" />
+    <Progress :model-value="progress" />
   </div>
 </template>

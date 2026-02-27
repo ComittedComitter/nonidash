@@ -4,12 +4,27 @@ import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { ProgressIndicator, ProgressRoot } from 'reka-ui'
 import { cn } from '@/lib/utils'
+import { ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<ProgressRootProps & { class?: HTMLAttributes['class'] }>(), {
   modelValue: 0,
 })
 
 const delegatedProps = reactiveOmit(props, 'class')
+
+const isTransitioning = ref(false)
+
+watch(
+  () => props.modelValue,
+  (newVal, oldVal) => {
+    if (newVal >= oldVal) {
+      isTransitioning.value = true
+      setTimeout(() => {
+        isTransitioning.value = false
+      }, 1000)
+    }
+  },
+)
 </script>
 
 <template>
@@ -20,7 +35,11 @@ const delegatedProps = reactiveOmit(props, 'class')
     <ProgressIndicator
       data-slot="progress-indicator"
       v-bind="delegatedProps"
-      :class="cn(`h-full w-full flex-1 transition-all duration-300`, props.class)"
+      :class="
+        cn(`h-full w-full flex-1 transition-all duration-300 bg-primary`, props.class, {
+          'bg-red-700': isTransitioning,
+        })
+      "
       :style="`transform: translateX(-${100 - (props.modelValue ?? 0)}%);`"
     />
   </ProgressRoot>
