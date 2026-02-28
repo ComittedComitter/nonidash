@@ -4,6 +4,7 @@ import { Item } from '@/components/ui/BareBox'
 import Textarea from '../ui/textarea/Textarea.vue'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@/lib/useLocalStorage'
+import journalPrompts from '@/assets/journalPrompts.json'
 
 const props = defineProps({
   storageId: {
@@ -50,6 +51,8 @@ const currentEntry = computed({
     entries.value[currentDate.value] = val
   },
 })
+
+const placeholder = computed(() => journalPrompts[selectedDay.value - 1] ?? journalPrompts[0]!)
 </script>
 
 <template>
@@ -79,7 +82,7 @@ const currentEntry = computed({
         v-model="currentEntry"
         data-swapy-no-drag
         class="flex-1 w-full resize-none"
-        placeholder="Write your journal entry..."
+        :placeholder="placeholder"
       />
     </div>
   </Item>

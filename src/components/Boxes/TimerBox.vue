@@ -39,7 +39,19 @@ function loadDuration(): number {
 watch(duration, saveDuration)
 
 const now = ref(Date.now())
-const finished = ref(false)
+
+const FINISHED_KEY = `timer-finished:${props.storageId}`
+const finished = ref<boolean>(loadFinished())
+watch(finished, saveFinished)
+
+function saveFinished(value: boolean) {
+  localStorage.setItem(FINISHED_KEY, JSON.stringify(value))
+}
+
+function loadFinished(): boolean {
+  const saved = localStorage.getItem(FINISHED_KEY)
+  return saved ? JSON.parse(saved) : false
+}
 
 // --------------------
 //     Total Time
@@ -207,7 +219,7 @@ const playSound = () => {
         />
         <div class="flex gap-3" data-swapy-no-drag>
           <template v-if="finished">
-            <Button @click="addTime">Add</Button>
+            <Button @click="addTime">Add to total</Button>
             <Button @click="discardTime" variant="outline">Do not add</Button>
           </template>
           <template v-else>
