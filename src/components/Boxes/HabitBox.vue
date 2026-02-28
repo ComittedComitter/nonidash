@@ -34,7 +34,7 @@ const days = [
   { id: 7, label: 'Sun' },
 ]
 
-const selected = useLocalStorage<number[]>('days', [])
+const selected = useLocalStorage<number[]>(`habitbox:${props.storageId}:selected`, [])
 const target = useLocalStorage(`habitbox:${props.storageId}:target`, 5)
 const lastXpDate = useLocalStorage<number | null>(`habitbox:${props.storageId}:lastXp`, null)
 const lastXpWeek = useLocalStorage<number | null>(`habitbox:${props.storageId}:lastXpWeek`, null)

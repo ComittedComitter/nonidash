@@ -83,8 +83,6 @@ function loadBoxes(): BoxItem[] {
     { boxId: 'habit', component: markRaw(HabitBox), rowSpan: 1 },
     { boxId: 'timer', component: markRaw(TimerBox), rowSpan: 1 },
     { boxId: 'todo', component: markRaw(TodoBox), rowSpan: 1 },
-    { boxId: 'todo2', component: markRaw(TodoBox), rowSpan: 1 },
-    { boxId: 'roadmap', component: markRaw(RoadMap), rowSpan: 1 },
   ]
 }
 
