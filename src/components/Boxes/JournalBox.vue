@@ -81,7 +81,7 @@ const placeholder = computed(() => journalPrompts[selectedDay.value - 1] ?? jour
       <Textarea
         v-model="currentEntry"
         data-swapy-no-drag
-        class="flex-1 w-full resize-none"
+        class="flex-1 resize-none"
         :placeholder="placeholder"
       />
     </div>
