@@ -110,7 +110,7 @@ watch(
           model-value="Work on Noni"
           :storage-key="`${storageId}:title`"
         />
-        <div class="py-2 flex xl:gap-4 lg:gap-2 gap-4 ">
+        <div class="py-2 flex xl:gap-4 lg:gap-2 gap-4">
           <CheckboxGroupRoot v-for="day in days" :key="day.id" v-model="selected">
             <label data-swapy-no-drag>
               <CheckCircle :value="day.id" />
@@ -118,7 +118,7 @@ watch(
             </label>
           </CheckboxGroupRoot>
         </div>
-        <Progress :model-value="Math.min(targetPercentage * selected.length, 100)" " />
+        <Progress :model-value="Math.min(targetPercentage * selected.length, 100)" />
       </div>
     </Item>
   </div>
