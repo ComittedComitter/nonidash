@@ -14,6 +14,7 @@ import TodoBox from '@/components/Boxes/TodoBox.vue'
 import DateBox from '@/components/Boxes/DateBox.vue'
 import RoadMap from '@/components/Boxes/RoadMap.vue'
 import JournalBox from '@/components/Boxes/JournalBox.vue'
+import ColorpickerBox from '@/components/Boxes/ColorpickerBox.vue'
 
 const emit = defineEmits<{
   add: [component: ReturnType<typeof markRaw>, boxType: string]
@@ -41,6 +42,9 @@ function addBox(component: ReturnType<typeof markRaw>, boxType: string) {
       <DropdownMenuItem @click="addBox(markRaw(DateBox), 'date')">Today</DropdownMenuItem>
       <DropdownMenuItem @click="addBox(markRaw(JournalBox), 'journal')">Journal</DropdownMenuItem>
       <DropdownMenuItem @click="addBox(markRaw(RoadMap), 'roadmap')">Roadmap</DropdownMenuItem>
+      <DropdownMenuItem @click="addBox(markRaw(ColorpickerBox), 'colorpicker')"
+        >Color Picker</DropdownMenuItem
+      >
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

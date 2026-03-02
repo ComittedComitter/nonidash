@@ -171,10 +171,10 @@ const props = defineProps({
           <Checkbox :default-value="true" /><ItemContent>Domain</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Build</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Build</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Host</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Host</ItemContent>
         </div>
       </div>
 

@@ -42,7 +42,7 @@ defineProps<{
 const { isMobile } = useSidebar()
 const themeStore = useThemeStore()
 
-const userColor = useLocalStorage('user-color', '#e879f9')
+const userColor = useLocalStorage('user-color', '#5fd0a6')
 const colorOptions = ['#e879f9', '#22d3ee', '#facc15']
 const premiumColorOptions = ['#5fd0a6', '#c10007']
 

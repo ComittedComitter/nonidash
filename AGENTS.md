@@ -30,12 +30,21 @@ src/
 │   └── utils.ts              # Utilities (cn helper, etc.)
 ├── stores/                   # Pinia stores (theme.ts, counter.ts)
 ├── router/                   # Vue Router config
+├── pages/                    # Page components (DashboardPage, RoadmapPage, etc.)
 ├── __tests__/               # Vitest tests (*.spec.ts)
-├── App.vue                  # Main dashboard with swapy
+├── App.vue                  # Root component with RouterView
 ├── main.ts                  # App entry point
 ├── style.css                # TailwindCSS + theme variables
 └── types.ts                 # Core type definitions
 ```
+
+---
+
+## Verification Commands
+
+- **Type check:** `npm run type-check`
+- **Lint:** `npm run lint`
+- **Dev server:** `npm run dev` (only run if explicitly asked - assume dev server is already running)
 
 ---
 
@@ -65,7 +74,7 @@ To create a new box component:
 3. Add to `AddBox.vue`:
    - Import the component
    - Add a `DropdownMenuItem` with `markRaw(YourComponent)`
-4. Add to `App.vue`:
+4. Add to `DashboardPage.vue`:
    - Import the component
    - Add it to `BOX_COMPONENTS` with a unique key (e.g., `journal: markRaw(JournalBox)`)
 

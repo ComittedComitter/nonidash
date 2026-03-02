@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import type { LucideIcon } from "lucide-vue-next"
-import {
-  Folder,
-  Forward,
-  MoreHorizontal,
-  Trash2,
-} from "lucide-vue-next"
+import type { LucideIcon } from 'lucide-vue-next'
+import { Folder, Forward, MoreHorizontal, Trash2 } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
 
 import {
   DropdownMenu,
@@ -41,10 +37,10 @@ const { isMobile } = useSidebar()
     <SidebarMenu>
       <SidebarMenuItem v-for="item in projects" :key="item.name">
         <SidebarMenuButton as-child>
-          <a :href="item.url">
+          <RouterLink :to="item.url">
             <component :is="item.icon" />
             <span>{{ item.name }}</span>
-          </a>
+          </RouterLink>
         </SidebarMenuButton>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
