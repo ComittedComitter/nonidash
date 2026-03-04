@@ -199,7 +199,7 @@ const playSound = () => {
           class="text-3xl font-bold pl-2"
           :storage-key="`${storageId}:title`"
         />
-        <div v-if="!finished" class="text-sm text-muted">
+        <div v-if="!finished" class="text-sm text-secondary">
           Weekly Total: {{ totalTimeFormatted }}
         </div>
       </div>

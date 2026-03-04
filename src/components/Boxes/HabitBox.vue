@@ -95,7 +95,7 @@ watch(
           @click="decreaseTarget"
           class="overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"
         />
-        <h1 class="mx-1 font-medium text-muted group-hover:text-muted-foreground">
+        <h1 class="mx-1 font-medium text-secondary group-hover:text-muted-foreground">
           Target: {{ target }}
         </h1>
         <PlusIcon

@@ -22,7 +22,7 @@ const props = defineProps({
     @remove="props.onRemove?.(props.storageId)"
   >
     <h2 class="text-3xl font-bold w-xl">Noni Roadmap</h2>
-    <div class="grid grid-cols-2 3xl:grid-cols-5 gap-4">
+    <div class="grid grid-cols-10 gap-1">
       <div class="">
         <div class="text-lg font-bold">
           V0.1 <span class="font-normal text-sm text-gray-400">Foundations</span>
@@ -48,10 +48,10 @@ const props = defineProps({
           <Checkbox :default-value="true" /><ItemContent>Progress Bar</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Rearrangeable Boxes</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Move boxes</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>'Add box' functionality</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>'Add box' button</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Anti-drag zones</ItemContent>
@@ -106,7 +106,7 @@ const props = defineProps({
           <Checkbox :default-value="true" /><ItemContent>Notification</ItemContent>
         </div>
         <div class="flex gap-3 ite<ms-center">
-          <Checkbox :default-value="true" /><ItemContent>Confirmation and Total</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Confirm and Total</ItemContent>
         </div>
       </div>
       <div>
@@ -134,7 +134,7 @@ const props = defineProps({
           <Checkbox :default-value="true" /><ItemContent>XP bar in sidebar</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Habit xp once a day</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Habit xp once</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>Level Display</ItemContent>
@@ -151,7 +151,7 @@ const props = defineProps({
           <Checkbox :default-value="true" /><ItemContent>Color Picker</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Color on completetion</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Color in UI</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="true" /><ItemContent>XP Bar color</ItemContent>
