@@ -183,7 +183,7 @@ const props = defineProps({
           V1.0 <span class="font-normal text-sm text-gray-400">Finish</span>
         </div>
         <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Ask for feedback</ItemContent>
+          <Checkbox :default-value="true" /><ItemContent>Ask for feedback</ItemContent>
         </div>
         <div class="flex gap-3 items-center">
           <Checkbox :default-value="false" /><ItemContent>Bug fix</ItemContent>

@@ -9,6 +9,7 @@ import {
   Film,
   GalleryVerticalEnd,
   Shirt,
+  Calendar,
 } from 'lucide-vue-next'
 import NavMain from '@/components/NavMain.vue'
 import NavProjects from '@/components/NavProjects.vue'
@@ -53,34 +54,16 @@ const data = {
       plan: 'Free',
     },
   ],
-  navMain: [
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Roadmap',
-          url: '/roadmap',
-        },
-      ],
-    },
-  ],
   projects: [
     {
       name: 'Dashboard',
       url: '/',
-      icon: AudioLines,
+      icon: Calendar,
     },
     {
-      name: 'Music Videos',
-      url: '#',
-      icon: Film,
-    },
-    {
-      name: 'Artist Branding',
-      url: '#',
-      icon: Shirt,
+      name: 'Roadmap',
+      url: '/roadmap',
+      icon: BookOpen,
     },
   ],
 }
