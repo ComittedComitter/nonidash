@@ -119,10 +119,30 @@ const roadmapData = [
     version: 'V1.1',
     subtitle: 'UI',
     items: [
-      { label: 'Fix Todo overflow', done: true },
+      { label: 'Fix Todo overflow', done: false },
       { label: 'Fix Journal inputbox', done: false },
-      { label: 'Sidebar closed by default', done: false },
-      { label: 'Profit', done: false },
+      { label: 'Sidebar closed by default', done: true },
+      { label: 'Sidebar persistent state', done: true },
+    ],
+  },
+  {
+    version: 'V1.2',
+    subtitle: 'Todo',
+    items: [
+      { label: 'Optionally add dates', done: true },
+      { label: 'Settings: sort & remove checked', done: false },
+      { label: 'Remove subtitle', done: false },
+      { label: '??', done: false },
+    ],
+  },
+  {
+    version: 'V1.3',
+    subtitle: 'Design',
+    items: [
+      { label: 'Figma - Teenage engineering', done: true },
+      { label: 'Figma - Hobonichi', done: false },
+      { label: '??', done: false },
+      { label: 'Implement', done: false },
     ],
   },
 ]
@@ -135,7 +155,7 @@ const roadmapData = [
     @remove="props.onRemove?.(props.storageId)"
   >
     <h2 class="text-3xl font-bold w-xl">Noni Roadmap</h2>
-    <div class="grid grid-cols-10 gap-1">
+    <div class="grid grid-cols-10 gap-4 gap-y-10">
       <div v-for="col in roadmapData" :key="col.version">
         <div class="text-lg font-bold">
           {{ col.version }}
