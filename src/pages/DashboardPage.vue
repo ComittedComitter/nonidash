@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AppSidebar from '@/components/AppSidebar.vue'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,7 +6,7 @@ import {
   BreadcrumbList,
 } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 
 import HabitBox from '@/components/Boxes/HabitBox.vue'
 import AddHabitBox from '@/components/Boxes/AddBox.vue'
@@ -176,43 +175,38 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset>
-      <header
-        class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
+  <header
+    class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
+  >
+    <div class="flex items-center gap-2 px-4">
+      <SidebarTrigger class="-ml-1" />
+      <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem class="hidden md:block">
+            <BreadcrumbLink href="/"> Dashboard </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <AddHabitBox @add="addBox" />
+    </div>
+  </header>
+  <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+    <div
+      class="grid auto-rows-[30vh] grid-flow-dense gap-4 md:grid-cols-2 lg:grid-cols-3"
+      ref="container"
+      id="dashboard"
+    >
+      <div
+        v-for="{ slotId, itemId, item } in slottedItems"
+        :key="slotId"
+        :data-swapy-slot="slotId"
+        :class="item?.rowSpan === 2 ? 'row-span-2 min-h-[60vh]' : ''"
       >
-        <div class="flex items-center gap-2 px-4">
-          <SidebarTrigger class="-ml-1" />
-          <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="/"> Dashboard </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <AddHabitBox @add="addBox" />
-        </div>
-      </header>
-      <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div
-          class="grid auto-rows-[30vh] grid-flow-dense gap-4 md:grid-cols-2 lg:grid-cols-3"
-          ref="container"
-          id="dashboard"
-        >
-          <div
-            v-for="{ slotId, itemId, item } in slottedItems"
-            :key="slotId"
-            :data-swapy-slot="slotId"
-            :class="item?.rowSpan === 2 ? 'row-span-2 min-h-[60vh]' : ''"
-          >
-            <div v-if="item" class="item h-full" :data-swapy-item="itemId" :key="itemId">
-              <component :is="item.component" :storageId="itemId" :onRemove="removeBox" />
-            </div>
-          </div>
+        <div v-if="item" class="item h-full" :data-swapy-item="itemId" :key="itemId">
+          <component :is="item.component" :storageId="itemId" :onRemove="removeBox" />
         </div>
       </div>
-    </SidebarInset>
-  </SidebarProvider>
+    </div>
+  </div>
 </template>

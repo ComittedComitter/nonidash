@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LucideIcon } from 'lucide-vue-next'
 import { Folder, Forward, MoreHorizontal, Trash2 } from 'lucide-vue-next'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 
 import {
   DropdownMenu,
@@ -29,17 +29,23 @@ defineProps<{
 }>()
 
 const { isMobile } = useSidebar()
+const route = useRoute()
+
+const isActive = (url: string) => {
+  if (url === '/') return route.path === '/'
+  return route.path.startsWith(url)
+}
 </script>
 
 <template>
-  <SidebarGroup class="group-data-[collapsible=icon]:hidden">
-    <SidebarGroupLabel>Projects</SidebarGroupLabel>
+  <SidebarGroup>
+    <SidebarGroupLabel class="group-data-[collapsible=icon]:hidden">Projects</SidebarGroupLabel>
     <SidebarMenu>
       <SidebarMenuItem v-for="item in projects" :key="item.name">
         <SidebarMenuButton as-child>
-          <RouterLink :to="item.url">
-            <component :is="item.icon" />
-            <span>{{ item.name }}</span>
+          <RouterLink :to="item.url" class="group-data-[collapsible=icon]:!px-2">
+            <component :is="item.icon" class="group-data-[collapsible=icon]:shrink-0" />
+            <span class="group-data-[collapsible=icon]:hidden">{{ item.name }}</span>
           </RouterLink>
         </SidebarMenuButton>
         <DropdownMenu>
@@ -70,7 +76,7 @@ const { isMobile } = useSidebar()
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-      <SidebarMenuItem>
+      <SidebarMenuItem class="group-data-[collapsible=icon]:hidden">
         <SidebarMenuButton class="text-sidebar-foreground/70">
           <MoreHorizontal class="text-sidebar-foreground/70" />
           <span>More</span>

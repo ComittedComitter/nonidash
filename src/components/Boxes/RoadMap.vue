@@ -115,6 +115,16 @@ const roadmapData = [
       { label: 'Profit', done: false },
     ],
   },
+  {
+    version: 'V1.1',
+    subtitle: 'UI',
+    items: [
+      { label: 'Fix Todo overflow', done: true },
+      { label: 'Fix Journal inputbox', done: false },
+      { label: 'Sidebar closed by default', done: false },
+      { label: 'Profit', done: false },
+    ],
+  },
 ]
 </script>
 

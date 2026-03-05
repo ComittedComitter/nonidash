@@ -2,16 +2,13 @@
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 import {
-  AudioLines,
   AudioWaveform,
-  BookOpen,
   Command,
-  Film,
   GalleryVerticalEnd,
-  Shirt,
   Calendar,
+  LayoutDashboard,
+  Flag,
 } from 'lucide-vue-next'
-import NavMain from '@/components/NavMain.vue'
 import NavProjects from '@/components/NavProjects.vue'
 import NavUser from '@/components/NavUser.vue'
 import XpBar from '@/components/ui/XpBar.vue'
@@ -58,12 +55,12 @@ const data = {
     {
       name: 'Dashboard',
       url: '/',
-      icon: Calendar,
+      icon: LayoutDashboard,
     },
     {
       name: 'Roadmap',
       url: '/roadmap',
-      icon: BookOpen,
+      icon: Flag,
     },
   ],
 }
@@ -76,7 +73,6 @@ const data = {
     </SidebarHeader>
     <SidebarContent>
       <NavProjects :projects="data.projects" />
-      <NavMain :items="data.navMain" />
     </SidebarContent>
     <SidebarFooter>
       <div
