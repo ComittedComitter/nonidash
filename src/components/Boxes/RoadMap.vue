@@ -13,6 +13,109 @@ const props = defineProps({
     required: false,
   },
 })
+
+const roadmapData = [
+  {
+    version: 'V0.1',
+    subtitle: 'Foundations',
+    items: [
+      { label: 'Habit tracker', done: true },
+      { label: 'Timer', done: true },
+      { label: 'Todo List', done: true },
+      { label: 'Date and Clock', done: true },
+    ],
+  },
+  {
+    version: 'V0.2',
+    subtitle: 'Interaction',
+    items: [
+      { label: 'Progress Bar', done: true },
+      { label: 'Move boxes', done: true },
+      { label: "'Add box' button", done: true },
+      { label: 'Anti-drag zones', done: true },
+    ],
+  },
+  {
+    version: 'V0.3',
+    subtitle: 'Todo',
+    items: [
+      { label: 'Local Storage', done: true },
+      { label: 'Type in UI', done: true },
+      { label: 'Individual storage', done: true },
+      { label: 'Delete Tasks', done: true },
+    ],
+  },
+  {
+    version: 'V0.4',
+    subtitle: 'Habits',
+    items: [
+      { label: 'Local Storage', done: true },
+      { label: 'Set target', done: true },
+      { label: 'Change Title', done: true },
+      { label: 'Confetti', done: true },
+    ],
+  },
+  {
+    version: 'V0.5',
+    subtitle: 'Timer',
+    items: [
+      { label: 'Local Storage', done: true },
+      { label: 'Set duration', done: true },
+      { label: 'Notification', done: true },
+      { label: 'Confirm and Total', done: true },
+    ],
+  },
+  {
+    version: 'V0.6',
+    subtitle: 'Journal',
+    items: [
+      { label: 'Local Storage', done: true },
+      { label: 'Text entry', done: true },
+      { label: 'Daily note UI', done: true },
+      { label: 'Daily prompt', done: true },
+    ],
+  },
+  {
+    version: 'V0.7',
+    subtitle: 'XP system',
+    items: [
+      { label: 'XP bar in sidebar', done: true },
+      { label: 'Habit xp once', done: true },
+      { label: 'Level Display', done: true },
+      { label: 'Levelup Animation', done: false },
+    ],
+  },
+  {
+    version: 'V0.8',
+    subtitle: 'Color',
+    items: [
+      { label: 'Color Picker', done: true },
+      { label: 'Color in UI', done: true },
+      { label: 'XP Bar color', done: true },
+      { label: 'Avatar Picker', done: false },
+    ],
+  },
+  {
+    version: 'V0.9',
+    subtitle: 'Hello World',
+    items: [
+      { label: 'Polish', done: true },
+      { label: 'Domain', done: true },
+      { label: 'Build', done: true },
+      { label: 'Host', done: true },
+    ],
+  },
+  {
+    version: 'V1.0',
+    subtitle: 'Finish',
+    items: [
+      { label: 'Ask for feedback', done: true },
+      { label: 'Bug fix', done: false },
+      { label: '???', done: false },
+      { label: 'Profit', done: false },
+    ],
+  },
+]
 </script>
 
 <template>
@@ -23,176 +126,13 @@ const props = defineProps({
   >
     <h2 class="text-3xl font-bold w-xl">Noni Roadmap</h2>
     <div class="grid grid-cols-10 gap-1">
-      <div class="">
+      <div v-for="col in roadmapData" :key="col.version">
         <div class="text-lg font-bold">
-          V0.1 <span class="font-normal text-sm text-gray-400">Foundations</span>
+          {{ col.version }}
+          <span class="font-normal text-sm text-gray-400">{{ col.subtitle }}</span>
         </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Habit tracker</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Timer</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Todo List</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Date and Clock</ItemContent>
-        </div>
-      </div>
-      <div class="">
-        <div class="text-lg font-bold">
-          V0.2 <span class="font-normal text-sm text-gray-400">Interaction</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Progress Bar</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Move boxes</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>'Add box' button</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Anti-drag zones</ItemContent>
-        </div>
-      </div>
-      <div class="">
-        <div class="text-lg font-bold">
-          V0.3 <span class="font-normal text-sm text-gray-400">Todo</span>
-        </div>
-
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Type in UI</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Individual storage</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Delete Tasks</ItemContent>
-        </div>
-      </div>
-      <div class="">
-        <div class="text-lg font-bold">
-          V0.4 <span class="font-normal text-sm text-gray-400">Habits</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Set target</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Change Title</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Confetti</ItemContent>
-        </div>
-      </div>
-      <div class="">
-        <div class="text-lg font-bold">
-          V0.5 <span class="font-normal text-sm text-gray-400">Timer</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Set duration</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Notification</ItemContent>
-        </div>
-        <div class="flex gap-3 ite<ms-center">
-          <Checkbox :default-value="true" /><ItemContent>Confirm and Total</ItemContent>
-        </div>
-      </div>
-      <div>
-        <div class="text-lg font-bold">
-          V0.6 <span class="font-normal text-sm text-gray-400">Journal</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Local Storage</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Text entry</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Daily note UI</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Daily prompt</ItemContent>
-        </div>
-      </div>
-      <div>
-        <div class="text-lg font-bold">
-          V0.7 <span class="font-normal text-sm text-gray-400">XP system</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>XP bar in sidebar</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Habit xp once</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Level Display</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Levelup Animation</ItemContent>
-        </div>
-      </div>
-      <div>
-        <div class="text-lg font-bold">
-          V0.8 <span class="font-normal text-sm text-gray-400">Color</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Color Picker</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Color in UI</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>XP Bar color</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Avatar Picker</ItemContent>
-        </div>
-      </div>
-      <div>
-        <div class="text-lg font-bold">
-          V0.9 <span class="font-normal text-sm text-gray-400">Hello World</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Polish</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Domain</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Build</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Host</ItemContent>
-        </div>
-      </div>
-
-      <div>
-        <div class="text-lg font-bold">
-          V1.0 <span class="font-normal text-sm text-gray-400">Finish</span>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="true" /><ItemContent>Ask for feedback</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Bug fix</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>???</ItemContent>
-        </div>
-        <div class="flex gap-3 items-center">
-          <Checkbox :default-value="false" /><ItemContent>Profit</ItemContent>
+        <div v-for="item in col.items" :key="item.label" class="flex gap-3 items-center">
+          <Checkbox :default-value="item.done" /><ItemContent>{{ item.label }}</ItemContent>
         </div>
       </div>
     </div>
