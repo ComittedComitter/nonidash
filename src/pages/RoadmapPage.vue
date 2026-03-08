@@ -129,7 +129,7 @@ const V1RoadmapData = [
     items: [
       { label: 'Optionally add dates', done: false },
       { label: 'Settings: sort & remove checked', done: false },
-      { label: 'Remove subtitle', done: false },
+      { label: 'Remove subtitle', done: true },
       { label: '??', done: false },
     ],
   },

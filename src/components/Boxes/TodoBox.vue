@@ -67,7 +67,7 @@ function focusInput() {
     <form @submit.prevent="formSubmitted" class="flex flex-col justify-between h-full">
       <div>
         <div class="flex gap-2 items-center">
-          <EditableTitle model-value="Title" class="font-bold text-base" @click.stop />
+          <!-- <EditableTitle model-value="Title" class="font-bold text-base" @click.stop /> -->
           <!-- <EditableTitle model-value="Subtitle" class="font-normal text-base text-gray-400" /> -->
         </div>
         <div class="py-2" v-if="tasks">
