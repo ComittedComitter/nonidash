@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 
 const props = defineProps<{
   modelValue?: string

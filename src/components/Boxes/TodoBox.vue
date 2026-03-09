@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { ref, type PropType } from 'vue'
 import Button from '../ui/button/Button.vue'
 import type { Task } from '@/types'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { Trash2Icon } from 'lucide-vue-next'
 

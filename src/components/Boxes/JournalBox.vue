@@ -3,7 +3,7 @@ import { computed, ref, type PropType } from 'vue'
 import { Item } from '@/components/ui/BareBox'
 import Textarea from '../ui/textarea/Textarea.vue'
 import EditableTitle from '../ui/EditableTitle.vue'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 import journalPrompts from '@/assets/journalPrompts.json'
 
 const props = defineProps({

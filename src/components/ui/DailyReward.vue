@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { GiftIcon } from 'lucide-vue-next'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 import { useXp } from '@/lib/useXp'
 
 const lastClaimedDay = useLocalStorage('daily-reward:lastClaimed', '')

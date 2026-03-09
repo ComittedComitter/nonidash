@@ -28,7 +28,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { useThemeStore } from '@/stores/theme'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 import { watch } from 'vue'
 
 defineProps<{

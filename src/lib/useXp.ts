@@ -1,4 +1,4 @@
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 
 export function useXp() {
   const xp = useLocalStorage('xp-bar:xp', 0)

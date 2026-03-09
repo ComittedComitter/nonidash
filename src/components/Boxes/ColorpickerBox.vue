@@ -2,7 +2,7 @@
 import { type PropType } from 'vue'
 import { Item } from '@/components/ui/BareBox'
 import EditableTitle from '../ui/EditableTitle.vue'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 
 const props = defineProps({
   storageId: {

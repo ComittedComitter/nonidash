@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti'
 import type { Options } from 'canvas-confetti'
-import { useLocalStorage } from '@/lib/useLocalStorage'
+import { useLocalStorage } from '@vueuse/core'
 
 export function useConfetti() {
   const userColor = useLocalStorage('user-color', '#e879f9')
