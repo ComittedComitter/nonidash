@@ -36,7 +36,7 @@ const BOX_COMPONENTS: Record<string, Raw<Component>> = {
   timer: markRaw(TimerBox),
   todo: markRaw(TodoBox),
   date: markRaw(DateBox),
-  roadmap: markRaw(JournalBox),
+  journal: markRaw(JournalBox),
   colorpicker: markRaw(ColorpickerBox),
 }
 
