@@ -107,8 +107,8 @@ const V0RoadmapData = [
     items: [
       { label: 'Ask for feedback', done: true },
       { label: 'Bug fix', done: true },
-      { label: '???', done: false },
-      { label: 'Profit', done: false },
+      { label: 'Fixed localStorage', done: true },
+      { label: 'Roadmap Page', done: true },
     ],
   },
 ]
