@@ -9,6 +9,7 @@ import {
   Sun,
   Palette,
   ListTodoIcon,
+  Eraser,
 } from 'lucide-vue-next'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -45,10 +46,17 @@ const themeStore = useThemeStore()
 
 const userColor = useLocalStorage('user-color', '#5fd0a6')
 const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', true)
+const removeDoneYesterday = useLocalStorage<boolean>('todo-remove-done-yesterday', false)
 const sortCompletedChecked = computed({
   get: () => Boolean(sortCompleted.value),
   set: (value: boolean) => {
     sortCompleted.value = value
+  },
+})
+const removeDoneYesterdayChecked = computed({
+  get: () => Boolean(removeDoneYesterday.value),
+  set: (value: boolean) => {
+    removeDoneYesterday.value = value
   },
 })
 const colorOptions = ['#e879f9', '#22d3ee', '#facc15']
@@ -152,8 +160,13 @@ watch(
               />
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Bell />
-              Notifications
+              <Eraser />
+              <span>Remove Old Completed Tasks</span>
+              <Switch
+                :checked="removeDoneYesterdayChecked"
+                class="ml-auto"
+                @click.stop="removeDoneYesterdayChecked = !removeDoneYesterdayChecked"
+              />
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

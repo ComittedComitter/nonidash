@@ -2,7 +2,7 @@
 import { Item, ItemContent } from '@/components/ui/BareBox'
 import { Input } from '../ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { computed, ref, type PropType } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, type PropType } from 'vue'
 import Button from '../ui/button/Button.vue'
 import type { Task } from '@/types'
 import { useLocalStorage } from '@vueuse/core'
@@ -27,6 +27,8 @@ const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
 const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', true)
 const sortCompletedEnabled = computed(() => Boolean(sortCompleted.value))
+const removeDoneYesterday = useLocalStorage<boolean>('todo-remove-done-yesterday', false)
+const lastPruneDate = useLocalStorage('todo-last-prune-date', '')
 
 const sortedTasks = computed(() => {
   if (!sortCompletedEnabled.value) {
@@ -93,6 +95,64 @@ function setTaskDone(task: Task, done: boolean) {
 function focusInput() {
   inputRef.value?.$el?.focus()
 }
+
+function getLocalDateKey(date = new Date()) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function pruneCompletedFromPreviousDay(force = false) {
+  if (!removeDoneYesterday.value) {
+    return
+  }
+
+  const todayKey = getLocalDateKey()
+  if (!force && lastPruneDate.value === todayKey) {
+    return
+  }
+
+  const startOfToday = new Date()
+  startOfToday.setHours(0, 0, 0, 0)
+  const cutoff = startOfToday.getTime()
+
+  tasks.value = tasks.value.filter((task) => {
+    if (!task.done) return true
+    if (typeof task.doneAt !== 'number') return true
+    return task.doneAt >= cutoff
+  })
+
+  lastPruneDate.value = todayKey
+}
+
+watch(removeDoneYesterday, (enabled) => {
+  if (enabled) {
+    pruneCompletedFromPreviousDay(true)
+  }
+})
+
+watch(
+  tasks,
+  () => {
+    pruneCompletedFromPreviousDay()
+  },
+  { deep: true },
+)
+
+function handleVisibilityOrFocus() {
+  pruneCompletedFromPreviousDay()
+}
+
+onMounted(() => {
+  window.addEventListener('focus', handleVisibilityOrFocus)
+  document.addEventListener('visibilitychange', handleVisibilityOrFocus)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('focus', handleVisibilityOrFocus)
+  document.removeEventListener('visibilitychange', handleVisibilityOrFocus)
+})
 </script>
 
 <template>
