@@ -117,7 +117,7 @@ const V1RoadmapData = [
     version: 'V1.1',
     subtitle: 'UI',
     items: [
-      { label: 'Fix Todo overflow', done: false },
+      { label: 'Fix Todo overflow', done: true },
       { label: 'Fix Journal inputbox', done: false },
       { label: 'Sidebar closed by default', done: true },
       { label: 'Sidebar persistent state', done: true },
@@ -128,7 +128,7 @@ const V1RoadmapData = [
     subtitle: 'Todo',
     items: [
       { label: 'Optionally add dates', done: false },
-      { label: 'Settings: sort & remove checked', done: false },
+      { label: 'Settings: sort & remove checked', done: true },
       { label: 'Remove subtitle', done: true },
       { label: '??', done: false },
     ],

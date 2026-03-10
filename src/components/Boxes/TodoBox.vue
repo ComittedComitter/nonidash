@@ -2,7 +2,7 @@
 import { Item, ItemContent } from '@/components/ui/BareBox'
 import { Input } from '../ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ref, type PropType } from 'vue'
+import { computed, ref, type PropType } from 'vue'
 import Button from '../ui/button/Button.vue'
 import type { Task } from '@/types'
 import { useLocalStorage } from '@vueuse/core'
@@ -25,6 +25,38 @@ const newTask = ref('')
 const inputRef = ref<InstanceType<typeof Input> | null>(null)
 const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
+const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', true)
+const sortCompletedEnabled = computed(() => Boolean(sortCompleted.value))
+
+const sortedTasks = computed(() => {
+  if (!sortCompletedEnabled.value) {
+    return tasks.value
+  }
+
+  return tasks.value
+    .map((task, index) => ({ task, index }))
+    .sort((a, b) => {
+      if (a.task.done !== b.task.done) {
+        return a.task.done ? 1 : -1
+      }
+
+      if (!a.task.done && !b.task.done) {
+        const aCreated = a.task.createdAt ?? a.index
+        const bCreated = b.task.createdAt ?? b.index
+        return aCreated - bCreated
+      }
+
+      const aDoneAt = a.task.doneAt ?? 0
+      const bDoneAt = b.task.doneAt ?? 0
+
+      if (aDoneAt !== bDoneAt) {
+        return bDoneAt - aDoneAt
+      }
+
+      return a.index - b.index
+    })
+    .map(({ task }) => task)
+})
 
 function formSubmitted() {
   if (newTask.value.trim()) {
@@ -38,6 +70,7 @@ function addTask(newTask: string) {
     id: crypto.randomUUID(),
     title: newTask,
     done: false,
+    createdAt: Date.now(),
   })
 }
 
@@ -48,8 +81,13 @@ function removeTask(id: string) {
   }
 }
 
-function toggleTask(task: Task) {
-  task.done = !task.done
+function setTaskDone(task: Task, done: boolean) {
+  task.done = done
+  if (task.done) {
+    task.doneAt = Date.now()
+  } else {
+    task.doneAt = undefined
+  }
 }
 
 function focusInput() {
@@ -74,16 +112,18 @@ function focusInput() {
         <ScrollArea class="h-full pr-2" data-swapy-no-drag>
           <div class="py-2" v-if="tasks">
             <div
-              v-for="task in tasks"
+              v-for="task in sortedTasks"
               :key="task.id"
               class="flex gap-3 items-center group p-0.5 rounded-sm hover:bg-accent cursor-pointer"
               data-swapy-no-drag
-              @click="toggleTask(task)"
-            >
-              <Checkbox v-model="task.done" @click.stop /><ItemContent
-                :class="{ 'line-through': task.done }"
-                >{{ task.title }}</ItemContent
-              >
+            @click="setTaskDone(task, !task.done)"
+          >
+            <Checkbox
+              :checked="task.done"
+              @update:checked="setTaskDone(task, $event)"
+              @click.stop
+            />
+            <ItemContent :class="{ 'line-through': task.done }">{{ task.title }}</ItemContent>
               <Trash2Icon
                 @click.stop="removeTask(task.id)"
                 class="h-4 overflow-hidden w-0 opacity-0 translate-x-2 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out"

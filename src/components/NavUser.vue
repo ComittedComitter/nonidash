@@ -3,12 +3,12 @@ import {
   BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
   Sparkles,
   Moon,
   Sun,
   Palette,
+  ListTodoIcon,
 } from 'lucide-vue-next'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -27,9 +27,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { Switch } from '@/components/ui/switch'
 import { useThemeStore } from '@/stores/theme'
 import { useLocalStorage } from '@vueuse/core'
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 
 defineProps<{
   user: {
@@ -43,6 +44,13 @@ const { isMobile } = useSidebar()
 const themeStore = useThemeStore()
 
 const userColor = useLocalStorage('user-color', '#5fd0a6')
+const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', true)
+const sortCompletedChecked = computed({
+  get: () => Boolean(sortCompleted.value),
+  set: (value: boolean) => {
+    sortCompleted.value = value
+  },
+})
 const colorOptions = ['#e879f9', '#22d3ee', '#facc15']
 const premiumColorOptions = ['#5fd0a6', '#c10007']
 
@@ -134,9 +142,14 @@ watch(
               <BadgeCheck />
               Account
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CreditCard />
-              Billing
+            <DropdownMenuItem class="gap-2" @select.prevent>
+              <ListTodoIcon/>
+              <span>Sort Completed Tasks</span>
+              <Switch
+                :checked="sortCompletedChecked"
+                class="ml-auto"
+                @click.stop="sortCompletedChecked = !sortCompletedChecked"
+              />
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Bell />

@@ -2,6 +2,8 @@ export interface Task {
   id: string
   title: string
   done: boolean
+  createdAt?: number
+  doneAt?: number
 }
 
 export interface TimerState {
