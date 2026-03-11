@@ -5,7 +5,6 @@ import {
   AudioWaveform,
   Command,
   GalleryVerticalEnd,
-  Calendar,
   LayoutDashboard,
   Flag,
 } from 'lucide-vue-next'

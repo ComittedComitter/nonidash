@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   BadgeCheck,
-  Bell,
   ChevronsUpDown,
   LogOut,
   Sparkles,

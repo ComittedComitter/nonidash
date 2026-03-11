@@ -83,12 +83,14 @@ function removeTask(id: string) {
   }
 }
 
-function setTaskDone(task: Task, done: boolean) {
-  task.done = done
-  if (task.done) {
+function toggleTask(task: Task) {
+  if (!task.done) {
     task.doneAt = Date.now()
+    task.done = true
   } else {
     task.doneAt = undefined
+    task.done = false
+
   }
 }
 
@@ -176,11 +178,10 @@ onUnmounted(() => {
               :key="task.id"
               class="flex gap-3 items-center group p-0.5 rounded-sm hover:bg-accent cursor-pointer"
               data-swapy-no-drag
-            @click="setTaskDone(task, !task.done)"
+            @click="toggleTask(task)"
           >
             <Checkbox
-              :checked="task.done"
-              @update:checked="setTaskDone(task, $event)"
+              v-model="task.done"
               @click.stop
             />
             <ItemContent :class="{ 'line-through': task.done }">{{ task.title }}</ItemContent>
@@ -194,7 +195,7 @@ onUnmounted(() => {
       </div>
       <div class="flex space-x-2 py-1" data-swapy-no-drag>
         <Input ref="inputRef" v-model="newTask" placeholder="New Task" />
-        <Button type="submit"> Add </Button>
+        <Button type="submit"> Adhd </Button>
       </div>
     </form>
   </Item>

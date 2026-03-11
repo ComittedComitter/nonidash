@@ -165,7 +165,7 @@ const V1RoadmapData = [
   },
   {
     version: 'V1.6',
-    subtitle: 'Database backend',
+    subtitle: 'Database',
     items: [
       { label: 'Learn Convex', done: false },
       { label: 'Set up Convex', done: false },
