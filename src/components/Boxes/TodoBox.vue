@@ -25,13 +25,12 @@ const newTask = ref('')
 const inputRef = ref<InstanceType<typeof Input> | null>(null)
 const storageKey = `TodoBox:${props.storageId}`
 const tasks = useLocalStorage<Task[]>(storageKey, [])
-const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', true)
-const sortCompletedEnabled = computed(() => Boolean(sortCompleted.value))
+const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', false)
 const removeDoneYesterday = useLocalStorage<boolean>('todo-remove-done-yesterday', false)
 const lastPruneDate = useLocalStorage('todo-last-prune-date', '')
 
 const sortedTasks = computed(() => {
-  if (!sortCompletedEnabled.value) {
+  if (!sortCompleted.value) {
     return tasks.value
   }
 

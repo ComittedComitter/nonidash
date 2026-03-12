@@ -30,7 +30,7 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { useThemeStore } from '@/stores/theme'
 import { useLocalStorage } from '@vueuse/core'
-import { computed, watch } from 'vue'
+import { watch } from 'vue'
 
 defineProps<{
   user: {
@@ -44,20 +44,8 @@ const { isMobile } = useSidebar()
 const themeStore = useThemeStore()
 
 const userColor = useLocalStorage('user-color', '#5fd0a6')
-const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', true)
+const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', false)
 const removeDoneYesterday = useLocalStorage<boolean>('todo-remove-done-yesterday', false)
-const sortCompletedChecked = computed({
-  get: () => Boolean(sortCompleted.value),
-  set: (value: boolean) => {
-    sortCompleted.value = value
-  },
-})
-const removeDoneYesterdayChecked = computed({
-  get: () => Boolean(removeDoneYesterday.value),
-  set: (value: boolean) => {
-    removeDoneYesterday.value = value
-  },
-})
 const colorOptions = ['#e879f9', '#22d3ee', '#facc15']
 const premiumColorOptions = ['#5fd0a6', '#c10007']
 
@@ -153,18 +141,18 @@ watch(
               <ListTodoIcon/>
               <span>Sort Completed Tasks</span>
               <Switch
-                :checked="sortCompletedChecked"
+                :checked="sortCompleted"
                 class="ml-auto"
-                @click.stop="sortCompletedChecked = !sortCompletedChecked"
+                @click.stop="sortCompleted = !sortCompleted"
               />
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Eraser />
               <span>Remove Old Completed Tasks</span>
               <Switch
-                :checked="removeDoneYesterdayChecked"
+                :checked="removeDoneYesterday"
                 class="ml-auto"
-                @click.stop="removeDoneYesterdayChecked = !removeDoneYesterdayChecked"
+                @click.stop="removeDoneYesterday = !removeDoneYesterday"
               />
             </DropdownMenuItem>
           </DropdownMenuGroup>
