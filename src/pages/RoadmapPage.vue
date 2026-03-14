@@ -123,16 +123,17 @@ const V1RoadmapData = [
       { label: 'Sidebar persistent state', done: true },
     ],
   },
-  {
+    {
     version: 'V1.2',
-    subtitle: 'Todo',
+    subtitle: 'Database',
     items: [
-      { label: 'Optionally add dates', done: false },
-      { label: 'Settings: sort & remove checked', done: true },
-      { label: 'Remove subtitle', done: true },
-      { label: '??', done: false },
+      { label: 'Learn Convex', done: false },
+      { label: 'Set up Convex', done: false },
+      { label: 'Store user data', done: false },
+      { label: 'Authentication', done: false },
     ],
   },
+
   {
     version: 'V1.3',
     subtitle: 'Design',
@@ -165,12 +166,12 @@ const V1RoadmapData = [
   },
   {
     version: 'V1.6',
-    subtitle: 'Database',
+    subtitle: 'Todo',
     items: [
-      { label: 'Learn Convex', done: false },
-      { label: 'Set up Convex', done: false },
-      { label: 'Store user data', done: false },
-      { label: 'Authentication', done: false },
+      { label: 'Optionally add dates', done: false },
+      { label: 'Settings: sort & remove checked', done: true },
+      { label: 'Remove subtitle', done: true },
+      { label: 'Convex', done: false },
     ],
   },
   {
@@ -180,7 +181,7 @@ const V1RoadmapData = [
       { label: 'History view', done: false },
       { label: 'Multiple timers in the box', done: false },
       { label: 'Interval timer', done: false },
-      { label: '??', done: false },
+      { label: 'Convex', done: false },
     ],
   },
   {
@@ -190,7 +191,7 @@ const V1RoadmapData = [
       { label: 'History view', done: false },
       { label: 'Markdown', done: false },
       { label: '??', done: false },
-      { label: '??', done: false },
+      { label: 'Convex', done: false },
     ],
   },
   {
