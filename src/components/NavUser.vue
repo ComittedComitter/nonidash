@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import {
-  BadgeCheck,
   ChevronsUpDown,
-  CircleUserRound,
   LogOut,
-  Sparkles,
   Moon,
-  Sun,
   ListTodoIcon,
   Eraser,
+  Wrench,
 } from 'lucide-vue-next'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -80,6 +77,13 @@ const fallbackInitials = computed(() => {
     .toUpperCase()
 })
 
+const initialsInput = computed({
+  get: () => initialsDraft.value,
+  set: (value: string | number) => {
+    initialsDraft.value = sanitizeInitials(String(value))
+  },
+})
+
 function openProfileDialog() {
   initialsDraft.value = fallbackInitials.value
   colorDraft.value = userColor.value
@@ -143,42 +147,36 @@ watch(
                 <span class="truncate font-semibold">{{ user.name }}</span>
                 <span class="truncate text-xs">{{ user.email }}</span>
               </div>
-              <CircleUserRound class="size-4 text-muted-foreground" />
+              <Wrench class="size-4 text-muted-foreground mr-3" />
             </button>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Sparkles />
-              Upgrade to Pro
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem @click="themeStore.toggle()">
-              <component :is="themeStore.isDark ? Sun : Moon" />
-              {{ themeStore.isDark ? 'Light Mode' : 'Dark Mode' }}
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <BadgeCheck />
-              Account
+            <DropdownMenuItem class="gap-2" @select.prevent>
+              <Moon />
+              <span>Dark Mode</span>
+              <Switch
+                :model-value="themeStore.isDark"
+                class="ml-auto"
+                @update:model-value="themeStore.setTheme(Boolean($event))"
+              />
             </DropdownMenuItem>
             <DropdownMenuItem class="gap-2" @select.prevent>
               <ListTodoIcon/>
               <span>Sort Completed Tasks</span>
               <Switch
-                :checked="sortCompleted"
+                :model-value="sortCompleted"
                 class="ml-auto"
-                @click.stop="sortCompleted = !sortCompleted"
+                @update:model-value="sortCompleted = Boolean($event)"
               />
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem class="gap-2" @select.prevent>
               <Eraser />
               <span>Remove Old Completed Tasks</span>
               <Switch
-                :checked="removeDoneYesterday"
+                :model-value="removeDoneYesterday"
                 class="ml-auto"
-                @click.stop="removeDoneYesterday = !removeDoneYesterday"
+                @update:model-value="removeDoneYesterday = Boolean($event)"
               />
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -216,11 +214,10 @@ watch(
               <label for="profile-initials" class="text-sm font-medium">Avatar Letters</label>
               <Input
                 id="profile-initials"
-                v-model="initialsDraft"
+                v-model="initialsInput"
                 maxlength="3"
                 placeholder="ABC"
                 class="uppercase"
-                @input="initialsDraft = sanitizeInitials(initialsDraft.toString())"
               />
               <p class="text-xs text-muted-foreground">Use up to 3 letters.</p>
             </div>

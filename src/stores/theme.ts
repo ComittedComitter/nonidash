@@ -22,13 +22,17 @@ export const useThemeStore = defineStore('theme', () => {
     }
   }
 
-  function toggle() {
-    isDark.value = !isDark.value
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+  function setTheme(nextValue: boolean) {
+    isDark.value = nextValue
+    localStorage.setItem('theme', nextValue ? 'dark' : 'light')
     applyTheme()
+  }
+
+  function toggle() {
+    setTheme(!isDark.value)
   }
 
   watch(isDark, applyTheme)
 
-  return { isDark, init, toggle }
+  return { isDark, init, toggle, setTheme }
 })
