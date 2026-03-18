@@ -88,7 +88,7 @@ const V0RoadmapData = [
       { label: 'Color Picker', done: true },
       { label: 'Color in UI', done: true },
       { label: 'XP Bar color', done: true },
-      { label: 'Avatar Picker', done: false },
+      { label: 'Avatar Picker', done: true },
     ],
   },
   {

@@ -2,16 +2,25 @@
 import {
   BadgeCheck,
   ChevronsUpDown,
+  CircleUserRound,
   LogOut,
   Sparkles,
   Moon,
   Sun,
-  Palette,
   ListTodoIcon,
   Eraser,
 } from 'lucide-vue-next'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +30,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -30,9 +40,9 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { useThemeStore } from '@/stores/theme'
 import { useLocalStorage } from '@vueuse/core'
-import { watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   user: {
     name: string
     email: string
@@ -43,11 +53,45 @@ defineProps<{
 const { isMobile } = useSidebar()
 const themeStore = useThemeStore()
 
+const menuOpen = ref(false)
+const profileDialogOpen = ref(false)
 const userColor = useLocalStorage('user-color', '#5fd0a6')
+const userInitials = useLocalStorage('user-initials', '')
 const sortCompleted = useLocalStorage<boolean>('todo-sort-completed', false)
 const removeDoneYesterday = useLocalStorage<boolean>('todo-remove-done-yesterday', false)
-const colorOptions = ['#e879f9', '#22d3ee', '#facc15']
-const premiumColorOptions = ['#5fd0a6', '#c10007']
+const profileColors = ['#e879f9', '#22d3ee', '#facc15', '#5fd0a6', '#c10007', '#f97316']
+const initialsDraft = ref('')
+const colorDraft = ref(userColor.value)
+
+function sanitizeInitials(value: string): string {
+  return value.replace(/[^a-z]/gi, '').slice(0, 3).toUpperCase()
+}
+
+const fallbackInitials = computed(() => {
+  const savedInitials = sanitizeInitials(userInitials.value)
+  if (savedInitials) return savedInitials
+
+  return props.user.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0] ?? '')
+    .join('')
+    .slice(0, 3)
+    .toUpperCase()
+})
+
+function openProfileDialog() {
+  initialsDraft.value = fallbackInitials.value
+  colorDraft.value = userColor.value
+  menuOpen.value = false
+  profileDialogOpen.value = true
+}
+
+function saveProfileAccent() {
+  userInitials.value = sanitizeInitials(initialsDraft.value)
+  userColor.value = colorDraft.value
+  profileDialogOpen.value = false
+}
 
 watch(
   userColor,
@@ -61,7 +105,8 @@ watch(
 <template>
   <SidebarMenu>
     <SidebarMenuItem>
-      <DropdownMenu>
+      <Dialog v-model:open="profileDialogOpen">
+        <DropdownMenu v-model:open="menuOpen">
         <DropdownMenuTrigger as-child>
           <SidebarMenuButton
             size="lg"
@@ -69,7 +114,7 @@ watch(
           >
             <Avatar class="h-8 w-8 rounded-lg">
               <AvatarImage :src="user.avatar" :alt="user.name" />
-              <AvatarFallback class="rounded-lg text-user"> MO </AvatarFallback>
+              <AvatarFallback class="rounded-lg text-user"> {{ fallbackInitials }} </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
               <span class="truncate font-medium">{{ user.name }}</span>
@@ -85,32 +130,27 @@ watch(
           :side-offset="4"
         >
           <DropdownMenuLabel class="p-0 font-normal">
-            <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+            <button
+              type="button"
+              class="flex w-full items-center gap-2 rounded-md px-1 py-1.5 text-left text-sm transition-colors hover:bg-accent"
+              @click="openProfileDialog"
+            >
               <Avatar class="h-8 w-8 rounded-lg">
                 <AvatarImage :src="user.avatar" :alt="user.name" />
-                <AvatarFallback class="rounded-lg"> CN </AvatarFallback>
+                <AvatarFallback class="rounded-lg text-user"> {{ fallbackInitials }} </AvatarFallback>
               </Avatar>
               <div class="grid flex-1 text-left text-sm leading-tight">
                 <span class="truncate font-semibold">{{ user.name }}</span>
                 <span class="truncate text-xs">{{ user.email }}</span>
               </div>
-            </div>
+              <CircleUserRound class="size-4 text-muted-foreground" />
+            </button>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Sparkles />
               Upgrade to Pro
-              <div class="ml-auto flex gap-1.5">
-                <button
-                  v-for="color in premiumColorOptions"
-                  :key="color"
-                  @click.stop="userColor = color"
-                  class="h-4 w-4 rounded-full border-2 transition-transform hover:scale-110"
-                  :style="{ backgroundColor: color }"
-                  :class="userColor === color ? 'border-foreground' : 'border-transparent'"
-                />
-              </div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -118,20 +158,6 @@ watch(
             <DropdownMenuItem @click="themeStore.toggle()">
               <component :is="themeStore.isDark ? Sun : Moon" />
               {{ themeStore.isDark ? 'Light Mode' : 'Dark Mode' }}
-            </DropdownMenuItem>
-            <DropdownMenuItem class="cursor-pointer gap-2">
-              <Palette />
-              <span>Accent Color</span>
-              <div class="ml-auto flex gap-1.5">
-                <button
-                  v-for="color in colorOptions"
-                  :key="color"
-                  @click.stop="userColor = color"
-                  class="h-4 w-4 rounded-full border-2 transition-transform hover:scale-110"
-                  :style="{ backgroundColor: color }"
-                  :class="userColor === color ? 'border-foreground' : 'border-transparent'"
-                />
-              </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <BadgeCheck />
@@ -162,7 +188,65 @@ watch(
             Log out
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu>
+        </DropdownMenu>
+
+        <DialogContent class="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Customize Profile</DialogTitle>
+            <DialogDescription>
+              Pick up to three letters for your avatar and choose your accent color.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div class="grid gap-5 py-2">
+            <div class="flex items-center gap-4 rounded-lg border p-4">
+              <Avatar class="h-12 w-12 rounded-lg">
+                <AvatarImage :src="user.avatar" :alt="user.name" />
+                <AvatarFallback class="rounded-lg text-user" :style="{ color: colorDraft }">
+                  {{ sanitizeInitials(initialsDraft) || fallbackInitials }}
+                </AvatarFallback>
+              </Avatar>
+              <div class="grid gap-1">
+                <span class="text-sm font-medium">{{ user.name }}</span>
+                <span class="text-xs text-muted-foreground">{{ user.email }}</span>
+              </div>
+            </div>
+
+            <div class="grid gap-2">
+              <label for="profile-initials" class="text-sm font-medium">Avatar Letters</label>
+              <Input
+                id="profile-initials"
+                v-model="initialsDraft"
+                maxlength="3"
+                placeholder="ABC"
+                class="uppercase"
+                @input="initialsDraft = sanitizeInitials(initialsDraft.toString())"
+              />
+              <p class="text-xs text-muted-foreground">Use up to 3 letters.</p>
+            </div>
+
+            <div class="grid gap-2">
+              <span class="text-sm font-medium">Accent Color</span>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="color in profileColors"
+                  :key="color"
+                  type="button"
+                  class="h-8 w-8 rounded-full border-2 transition-transform hover:scale-105"
+                  :style="{ backgroundColor: color }"
+                  :class="colorDraft === color ? 'border-foreground' : 'border-transparent'"
+                  @click="colorDraft = color"
+                />
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" @click="profileDialogOpen = false">Cancel</Button>
+            <Button @click="saveProfileAccent">Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </SidebarMenuItem>
   </SidebarMenu>
 </template>
