@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LucideIcon } from 'lucide-vue-next'
 import { Folder, Forward, MoreHorizontal, Trash2 } from 'lucide-vue-next'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
 
 import {
   DropdownMenu,
@@ -29,12 +29,6 @@ defineProps<{
 }>()
 
 const { isMobile } = useSidebar()
-const route = useRoute()
-
-const isActive = (url: string) => {
-  if (url === '/') return route.path === '/'
-  return route.path.startsWith(url)
-}
 </script>
 
 <template>

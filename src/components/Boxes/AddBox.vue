@@ -36,7 +36,7 @@ function addBox(component: ReturnType<typeof markRaw>, boxType: string) {
       <Button variant="outline"> Add Box </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
-      <DropdownMenuItem @click="addBox(markRaw(HabitBox), 'habit')">Weekly Habit</DropdownMenuItem>
+      <DropdownMenuItem @click="addBox(markRaw(HabitBox), 'habit')">Monthly Habit</DropdownMenuItem>
       <DropdownMenuItem @click="addBox(markRaw(TimerBox), 'timer')">Timer</DropdownMenuItem>
       <DropdownMenuItem @click="addBox(markRaw(TodoBox), 'todo')">To do</DropdownMenuItem>
       <DropdownMenuItem @click="addBox(markRaw(DateBox), 'date')">Today</DropdownMenuItem>
