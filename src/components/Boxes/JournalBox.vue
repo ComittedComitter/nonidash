@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from 'vue'
 import { Item } from '@/components/ui/BareBox'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import Textarea from '../ui/textarea/Textarea.vue'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@vueuse/core'
 import journalPrompts from '@/assets/journalPrompts.json'
+import { ChevronDownIcon } from 'lucide-vue-next'
 
 const props = defineProps({
   storageId: {
@@ -53,6 +62,7 @@ const currentEntry = computed({
 })
 
 const placeholder = computed(() => journalPrompts[selectedDay.value - 1] ?? journalPrompts[0]!)
+const selectedDayLabel = computed(() => DAY_LABELS[selectedDay.value - 1] ?? DAY_LABELS[0])
 </script>
 
 <template>
@@ -63,7 +73,25 @@ const placeholder = computed(() => journalPrompts[selectedDay.value - 1] ?? jour
   >
     <div class="flex justify-between">
       <EditableTitle model-value="Journal" :storage-key="`${storageId}:title`" />
-      <div class="flex gap-1 justify-center py-2 overflow-x-auto" data-swapy-no-drag>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button variant="outline" size="sm" class="gap-2 lg:hidden" data-swapy-no-drag>
+            {{ selectedDayLabel }}
+            <ChevronDownIcon class="size-4 text-muted-foreground" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end" class="w-36 lg:hidden" data-swapy-no-drag>
+          <DropdownMenuRadioGroup v-model="selectedDay">
+            <DropdownMenuRadioItem v-for="day in orderedDays" :key="day" :value="day">
+              {{ DAY_LABELS[day - 1] }}
+            </DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <div class="hidden gap-1 justify-center overflow-x-auto py-2 lg:flex" data-swapy-no-drag>
         <button
           v-for="day in orderedDays"
           :key="day"

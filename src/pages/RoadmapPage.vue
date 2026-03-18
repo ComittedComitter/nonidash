@@ -118,7 +118,7 @@ const V1RoadmapData = [
     subtitle: 'UI',
     items: [
       { label: 'Fix Todo overflow', done: true },
-      { label: 'Fix Journal inputbox', done: false },
+      { label: 'Fix Journal inputbox', done: true },
       { label: 'Sidebar closed by default', done: true },
       { label: 'Sidebar persistent state', done: true },
     ],
@@ -127,7 +127,7 @@ const V1RoadmapData = [
     version: 'V1.2',
     subtitle: 'Database',
     items: [
-      { label: 'Learn Convex', done: false },
+      { label: 'Learn Convex', done: true },
       { label: 'Set up Convex', done: false },
       { label: 'Store user data', done: false },
       { label: 'Authentication', done: false },
@@ -198,10 +198,10 @@ const V1RoadmapData = [
     version: 'V1.9',
     subtitle: 'Habits',
     items: [
-      { label: 'History view', done: false },
-      { label: 'Reposition title', done: false },
-      { label: 'Change to monthly view', done: false },
-      { label: 'Fix the progressbar', done: false },
+      { label: 'History view', done: true },
+      { label: 'Reposition title', done: true },
+      { label: 'Change to monthly view', done: true },
+      { label: 'Convex', done: false },
     ],
   },
   {

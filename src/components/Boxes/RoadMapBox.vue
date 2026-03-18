@@ -22,7 +22,7 @@ const props = defineProps<{
 <template>
   <Item variant="outline" class="flex flex-col items-start p-10 content-start">
     <h2 class="text-3xl font-bold w-xl">{{ props.title }}</h2>
-    <div class="grid grid-cols-10 gap-4">
+    <div class="grid grid-cols-5 gap-4">
       <div v-for="col in props.data" :key="col.version">
         <div class="text-lg font-bold">
           {{ col.version }}
