@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type PropType } from 'vue'
+import { computed, ref, watch, type PropType } from 'vue'
 import { Item } from '@/components/ui/BareBox'
 import { Button } from '@/components/ui/button'
 import CheckCircle from '@/components/ui/checkbox/CheckCircle.vue'
@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Progress } from '@/components/ui/progress'
-import { ChevronDownIcon } from 'lucide-vue-next'
+import { ChevronDownIcon, MinusIcon, PlusIcon } from 'lucide-vue-next'
 import EditableTitle from '../ui/EditableTitle.vue'
 import { useLocalStorage } from '@vueuse/core'
 import { useConfetti } from '@/lib/useConfetti'
@@ -60,7 +60,8 @@ const currentMonthKey = formatMonthKey(today)
 
 const selectedMonthKey = useLocalStorage(`habitbox:${props.storageId}:month`, currentMonthKey)
 const completedByMonth = useLocalStorage<MonthEntries>(`habitbox:${props.storageId}:months`, {})
-const rewardedMonths = useLocalStorage<string[]>(`habitbox:${props.storageId}:rewarded`, [])
+const rewardedWeeks = useLocalStorage<string[]>(`habitbox:${props.storageId}:rewarded-weeks`, [])
+const target = useLocalStorage(`habitbox:${props.storageId}:target`, 5)
 
 const selectedMonth = computed(() => parseMonthKey(selectedMonthKey.value))
 const monthOptions = computed(() => {
@@ -83,9 +84,42 @@ const daysInMonth = computed(() => {
 
 const leadingEmptyDays = computed(() => (selectedMonth.value.getDay() + 6) % 7)
 const selectedDays = computed(() => completedByMonth.value[selectedMonthKey.value] ?? [])
-const selectedDayCount = computed(() => selectedDays.value.length)
-const progressValue = computed(() => (selectedDayCount.value / daysInMonth.value) * 100)
 const selectedMonthLabel = computed(() => monthWithYearFormatter.format(selectedMonth.value))
+
+function startOfWeek(date: Date): Date {
+  const start = new Date(date)
+  const offset = (start.getDay() + 6) % 7
+  start.setDate(start.getDate() - offset)
+  start.setHours(0, 0, 0, 0)
+  return start
+}
+
+function addDays(date: Date, amount: number): Date {
+  const next = new Date(date)
+  next.setDate(next.getDate() + amount)
+  return next
+}
+
+function formatDateKey(date: Date): string {
+  return `${formatMonthKey(date)}-${String(date.getDate()).padStart(2, '0')}`
+}
+
+function isDateChecked(date: Date): boolean {
+  const monthEntries = completedByMonth.value[formatMonthKey(date)] ?? []
+  return monthEntries.includes(date.getDate())
+}
+
+const currentWeekStart = computed(() => startOfWeek(today))
+const currentWeekKey = computed(() => formatDateKey(currentWeekStart.value))
+const currentWeekDates = computed(() =>
+  Array.from({ length: 7 }, (_, index) => addDays(currentWeekStart.value, index)),
+)
+const currentWeekDateKeys = computed(() => new Set(currentWeekDates.value.map((date) => formatDateKey(date))))
+const currentWeekCompletedCount = computed(
+  () => currentWeekDates.value.filter((date) => isDateChecked(date)).length,
+)
+const weeklyTargetReached = computed(() => currentWeekCompletedCount.value >= target.value)
+const progressValue = computed(() => Math.min((currentWeekCompletedCount.value / target.value) * 100, 100))
 
 const calendarDays = computed(() => {
   const date = selectedMonth.value
@@ -94,9 +128,11 @@ const calendarDays = computed(() => {
 
   return Array.from({ length: daysInMonth.value }, (_, index) => {
     const day = index + 1
+    const dayDate = new Date(year, month, day)
     return {
       day,
       checked: selectedDays.value.includes(day),
+      isCurrentWeek: currentWeekDateKeys.value.has(formatDateKey(dayDate)),
       isToday:
         today.getFullYear() === year && today.getMonth() === month && today.getDate() === day,
     }
@@ -110,13 +146,14 @@ function updateSelectedDays(nextDays: number[]) {
   }
 }
 
-function maybeRewardMonth() {
-  if (selectedDayCount.value !== daysInMonth.value) return
-  if (rewardedMonths.value.includes(selectedMonthKey.value)) return
+function increaseTarget() {
+  if (target.value >= 7) return
+  target.value++
+}
 
-  fireConfetti(itemRef.value)
-  addXp(10)
-  rewardedMonths.value = [...rewardedMonths.value, selectedMonthKey.value]
+function decreaseTarget() {
+  if (target.value <= 1) return
+  target.value--
 }
 
 function toggleDay(day: number, state: CheckboxState) {
@@ -129,11 +166,23 @@ function toggleDay(day: number, state: CheckboxState) {
   }
 
   updateSelectedDays(Array.from(nextDays).sort((left, right) => left - right))
-
-  if (state === true) {
-    maybeRewardMonth()
-  }
 }
+
+watch(
+  [currentWeekKey, weeklyTargetReached],
+  ([weekKey, reached], previousValue) => {
+    const [previousWeekKey, previousReached] = previousValue ?? []
+
+    if (!reached) return
+    if (weekKey === previousWeekKey && previousReached) return
+    if (rewardedWeeks.value.includes(weekKey)) return
+
+    fireConfetti(itemRef.value)
+    addXp(10)
+    rewardedWeeks.value = [...rewardedWeeks.value, weekKey]
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -143,38 +192,61 @@ function toggleDay(day: number, state: CheckboxState) {
       class="flex-col items-stretch gap-6"
       @remove="props.onRemove?.(props.storageId)"
     >
-      <div class="flex items-start justify-between gap-4 pr-8">
+      <div class="flex items-start justify-between gap-4">
         <div class="min-w-0">
           <EditableTitle
             class="pb-2 text-4xl font-bold"
             model-value="Work on Noni"
             :storage-key="`${storageId}:title`"
           />
-          <p class="text-sm text-muted-foreground">
-            {{ selectedDayCount }} of {{ daysInMonth }} days checked
-          </p>
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <p
+                class="inline-flex cursor-pointer items-center text-sm text-muted-foreground"
+                data-swapy-no-drag
+              >
+                {{ currentWeekCompletedCount }} of {{ target }} days this week
+              </p>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="start" class="w-44" data-swapy-no-drag>
+              <div class="flex items-center justify-between gap-3 px-2 py-1.5">
+                <span class="text-sm font-medium">Target: {{ target }}</span>
+                <div class="flex items-center gap-1">
+                  <Button variant="outline" size="icon-sm" data-swapy-no-drag @click="decreaseTarget">
+                    <MinusIcon class="size-4" />
+                  </Button>
+                  <Button variant="outline" size="icon-sm" data-swapy-no-drag @click="increaseTarget">
+                    <PlusIcon class="size-4" />
+                  </Button>
+                </div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger as-child>
-            <Button variant="outline" size="sm" class="gap-2" data-swapy-no-drag>
-              {{ selectedMonthLabel }}
-              <ChevronDownIcon class="size-4 text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
+        <div class="flex flex-col items-end gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <Button variant="outline" size="sm" class="gap-2" data-swapy-no-drag>
+                {{ selectedMonthLabel }}
+                <ChevronDownIcon class="size-4 text-muted-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end" class="w-48" data-swapy-no-drag>
-            <DropdownMenuRadioGroup v-model="selectedMonthKey">
-              <DropdownMenuRadioItem
-                v-for="month in monthOptions"
-                :key="month.key"
-                :value="month.key"
-              >
-                {{ month.label }}
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent align="end" class="w-48" data-swapy-no-drag>
+              <DropdownMenuRadioGroup v-model="selectedMonthKey">
+                <DropdownMenuRadioItem
+                  v-for="month in monthOptions"
+                  :key="month.key"
+                  :value="month.key"
+                >
+                  {{ month.label }}
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div class="grid grid-cols-7 gap-1.5">
@@ -195,8 +267,14 @@ function toggleDay(day: number, state: CheckboxState) {
         <label
           v-for="day in calendarDays"
           :key="day.day"
-          class="flex h-8 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border bg-background/60 px-1.5 py-1 text-center transition-colors hover:border-primary/40 sm:h-18"
-          :class="day.isToday ? 'border-user/30 bg-user/10' : 'border-border/70'"
+          class="flex h-8 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border bg-background/60 px-1.5 py-1 text-center transition-colors hover:border-primary/40 sm:h-14"
+          :class="
+            day.isToday
+              ? 'border-user/30 bg-user/10'
+              : day.isCurrentWeek
+                ? 'bg-user/5'
+                : 'border-border/70'
+          "
           data-swapy-no-drag
         >
           <span class="text-[11px] font-medium text-muted-foreground">
@@ -204,7 +282,7 @@ function toggleDay(day: number, state: CheckboxState) {
           </span>
           <CheckCircle
             :model-value="day.checked"
-            class="size-7"
+            class="size-6"
             @update:model-value="toggleDay(day.day, $event)"
           />
         </label>
